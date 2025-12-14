@@ -3,7 +3,7 @@ window-height = 35
 
 window-padding-x = 10
 window-padding-y = 10,0
-window-padding-color = extend
+window-padding-color = background
 
 font-family = FiraCode Nerd Font Mono
 font-thicken = true
