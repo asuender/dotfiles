@@ -13,12 +13,17 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "One Dark Classic Atom"
+    "dark": "One Dark Pro"
   },
   "diagnostics": {
     "inline": {
       "enabled": true,
       "max_severity": null
     }
+  },
+  "auto_install_extensions": {
+    "html": true,
+    "material-icon-theme": true,
+    "one-dark-pro": true
   }
 }
