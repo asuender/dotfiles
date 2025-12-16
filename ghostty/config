@@ -9,5 +9,10 @@ font-family = FiraCode Nerd Font Mono
 font-thicken = true
 font-size = 16
 
+# Copy Ghostty's terminfo to new remote machines
+shell-integration-features = ssh-terminfo
+# Fallback if terminfo installation fails
+shell-integration-features = ssh-env
+
 # Claude Code
 keybind = shift+enter=text:\x1b\r
