@@ -7,23 +7,32 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "vim_mode": true,
+  "relative_line_numbers": "enabled",
+  "remove_trailing_whitespace_on_save": true,
   "icon_theme": "Material Icon Theme",
   "ui_font_size": 16,
   "buffer_font_size": 16,
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "One Dark Pro"
+    "dark": "One Dark Pro",
   },
   "diagnostics": {
     "inline": {
       "enabled": true,
-      "max_severity": null
-    }
+      "max_severity": null,
+    },
   },
   "auto_install_extensions": {
     "html": true,
     "material-icon-theme": true,
-    "one-dark-pro": true
-  }
+    "one-dark-pro": true,
+  },
+  "languages": {
+    "Python": {
+      "language_servers": ["!basedpyright", "ty"],
+      "format_on_save": "on",
+    },
+  },
 }
