@@ -28,6 +28,7 @@
     "html": true,
     "material-icon-theme": true,
     "one-dark-pro": true,
+    "toml": true,
   },
   "languages": {
     "Python": {
