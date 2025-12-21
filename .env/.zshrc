@@ -10,12 +10,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -78,16 +72,6 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
 # Set personal aliases, overriding those provided by Oh My Zsh libs,
 # plugins, and themes. Aliases can be placed here, though Oh My Zsh
 # users are encouraged to define aliases within a top-level file in
@@ -107,28 +91,32 @@ export EDITOR="$VISUAL"
 
 # Custom keybindings
 
-show_folder_changer() {
+_folder_changer() {
   local excluded_dirs=(".*" "node_modules" "__pycache__" "pnpm" "pyenv" "renv" "build" "target")
-  local exclude_pattern=""
+  local exclude_args=()
 
   for dir in "${excluded_dirs[@]}"; do
-    if [ -z "$exclude_pattern" ]; then
-      exclude_pattern="-name \"$dir\""
-    else
-      exclude_pattern="$exclude_pattern -o -name \"$dir\""
+    if [[ ${#exclude_args[@]} -gt 0 ]]; then
+      exclude_args+=("-o")
     fi
+
+    exclude_args+=("-name" "$dir")
   done
 
-  local dir=$(eval "find $HOME/coding \( $exclude_pattern \) -prune -o -type d -print" | fzf)
+  local dir=$(find "$HOME/coding" \( "${exclude_args[@]}" \) -prune -o -type d -print | fzf)
   if [ -n "$dir" ]; then
+    zle push-input
     cd $dir
     zle accept-line
   fi
 }
 
-zle -N show_folder_changer
-bindkey "^f" show_folder_changer
+zle -N _folder_changer
+bindkey "^f" _folder_changer
+
+# Shell completions
 
 source <(fzf --zsh)
 eval "$(uv generate-shell-completion zsh)"
 
+export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
