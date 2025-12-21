@@ -132,4 +132,3 @@ bindkey "^f" show_folder_changer
 source <(fzf --zsh)
 eval "$(uv generate-shell-completion zsh)"
 
-export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
