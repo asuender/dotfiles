@@ -89,21 +89,19 @@ source $ZSH/oh-my-zsh.sh
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
+FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec")
+
+alias zshc="$EDITOR ~/.zshrc"
+
 # Custom keybindings
+fc_find_dirs() {
+  for path in "${FC_SEARCH_DIRS[@]}"; do
+    [[ -d "$path" ]] && "$FC_FD_CMD" --type d . "$path"
+  done
+}
 
 _folder_changer() {
-  local excluded_dirs=(".*" "node_modules" "__pycache__" "pnpm" "pyenv" "renv" "build" "target")
-  local exclude_args=()
-
-  for dir in "${excluded_dirs[@]}"; do
-    if [[ ${#exclude_args[@]} -gt 0 ]]; then
-      exclude_args+=("-o")
-    fi
-
-    exclude_args+=("-name" "$dir")
-  done
-
-  local dir=$(find "$HOME/coding" \( "${exclude_args[@]}" \) -prune -o -type d -print | fzf)
+  local dir=$(fc_find_dirs | fzf)
   if [ -n "$dir" ]; then
     zle push-input
     cd $dir
@@ -120,3 +118,6 @@ source <(fzf --zsh)
 eval "$(uv generate-shell-completion zsh)"
 
 export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
+
+# Resolve fd path for folder changer
+FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"
