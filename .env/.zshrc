@@ -1,4 +1,4 @@
-# If you come from bash you might have to change your $PATH.
+    # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
@@ -100,8 +100,36 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Basic stuff
+
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
+# Custom keybindings
+
+show_folder_changer() {
+  local excluded_dirs=(".*" "node_modules" "__pycache__" "pnpm" "pyenv" "renv" "build" "target")
+  local exclude_pattern=""
+
+  for dir in "${excluded_dirs[@]}"; do
+    if [ -z "$exclude_pattern" ]; then
+      exclude_pattern="-name \"$dir\""
+    else
+      exclude_pattern="$exclude_pattern -o -name \"$dir\""
+    fi
+  done
+
+  local dir=$(eval "find $HOME/coding \( $exclude_pattern \) -prune -o -type d -print" | fzf)
+  if [ -n "$dir" ]; then
+    cd $dir
+    zle accept-line
+  fi
+}
+
+zle -N show_folder_changer
+bindkey "^f" show_folder_changer
+
 source <(fzf --zsh)
 eval "$(uv generate-shell-completion zsh)"
+
+export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
