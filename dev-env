@@ -34,17 +34,17 @@ log() {
 copy() {
   if [[ $dry_run == "1" ]]; then
     log "Removing: $2"
-    rm $2
+    rm "$2"
   fi
 
   log "Copying: $1 to $2"
-  cp $1 $2
+  cp "$1" "$2"
 }
 
 if [[ $subset =~ ^(all|scripts)$ ]]; then
-  copy ./scripts/compare-solution $HOME/.local/bin
+  copy "./scripts/compare-solution" "$HOME/.local/bin"
 fi
 
 if [[ $subset == "all" ]]; then
-  copy ./.env/.zshrc $HOME/.zshrc
+  copy "./.dev/.zshrc" "$HOME/.zshrc"
 fi

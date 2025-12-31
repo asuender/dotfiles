@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# This scripts installs various packages via the default package manager.
+# The idea is to separate packages (which can be installed anytime and are
+# just updated when exeucted again) from other tools that use standalone
+# setup scripts that either run for too long or are not meant to be executed
+# again after being installed once.
+
+sudo apt update
+sudo apt install -y zsh shfmt shellcheck \
+  neovim fzf git-delta tmux fd-find
+
+# Setup ZSH
+hash -r
+sudo chsh -s "$(which zsh)"

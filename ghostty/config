@@ -16,3 +16,4 @@ shell-integration-features = ssh-env
 
 # Claude Code
 keybind = shift+enter=text:\x1b\r
+
