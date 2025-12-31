@@ -1,4 +1,4 @@
-    # If you come from bash you might have to change your $PATH.
+# If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
@@ -87,8 +87,8 @@ source $ZSH/oh-my-zsh.sh
 # Basic stuff
 
 export PATH=$HOME/.local/bin:$PATH
-[[ -d "/opt/homebrew/opt/python@3.12/libexec/bin" ]] \
-  && export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
+[[ -d "/opt/homebrew/opt/python@3.12/libexec/bin" ]] &&
+  export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
@@ -104,23 +104,25 @@ source <(fzf --zsh)
 
 export PNPM_HOME="/Users/asuender/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 eval "$(uv generate-shell-completion zsh)"
 
 # Custom keybindings
 
-FC_SEARCH_DIRS=("$HOME/.config" "$HOME/coding" "$HOME/mermec")
+FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec")
 
 fc_find_dirs() {
   for path in "${FC_SEARCH_DIRS[@]}"; do
-    [[ -d "$path" ]] && "$FC_FD_CMD" --type d . "$path"
+    if [[ -d "$path" ]]; then
+      "$FC_FD_CMD" --type d . "$path"
+    fi
   done
 }
 
@@ -128,7 +130,7 @@ _folder_changer() {
   local dir=$(fc_find_dirs | fzf)
   if [ -n "$dir" ]; then
     zle push-input
-    cd "$dir"
+    cd "$dir" || return
     zle accept-line
   fi
 }
@@ -138,3 +140,5 @@ bindkey "^f" _folder_changer
 
 # Resolve fd path for folder changer
 FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"
+
+. "$HOME/.cargo/env"
