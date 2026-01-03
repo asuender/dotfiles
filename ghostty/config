@@ -17,3 +17,6 @@ shell-integration-features = ssh-env
 # Claude Code
 keybind = shift+enter=text:\x1b\r
 
+# This ensures I can press Alt-1,2,... for tmux
+macos-option-as-alt = true
+
