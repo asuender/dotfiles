@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Omarchy/Arch Linux package installation script
+# This is the Arch equivalent of the Ubuntu/Debian `packages` script.
+# Requires: pacman, yay (AUR helper)
+
+set -e
+
+# Official repo packages
+sudo pacman -S --needed --noconfirm \
+  shfmt shellcheck git-delta tmux fd bat
+
+# AUR packages (via yay)
+yay -S --needed --noconfirm gum

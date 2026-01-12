@@ -26,8 +26,8 @@ docker run -it -v $HOME/.config:/root/.config buildpack-deps
 
 ```sh
 # Shell scripts
-shellcheck dev-env .setup/packages .setup/tools scripts/compare-solution
-shfmt -i 2 -w dev-env .setup/packages
+shellcheck dev-env .setup/packages .setup/packages.omarchy .setup/tools scripts/compare-solution
+shfmt -i 2 -w dev-env .setup/packages .setup/packages.omarchy
 
 # Lua files (Neovim)
 stylua nvim/
@@ -38,6 +38,13 @@ stylua nvim/
 ```sh
 ./.setup/packages    # Idempotent - install/update packages
 ./.setup/tools       # One-time tool installations
+```
+
+### Package Installation (Omarchy/Arch)
+
+```sh
+./.setup/packages.omarchy    # Idempotent - install packages via pacman/yay
+./.setup/tools               # One-time tool installations (platform-agnostic)
 ```
 
 ## Architecture
