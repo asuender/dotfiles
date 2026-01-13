@@ -93,7 +93,12 @@ export PATH=$HOME/.local/bin:$PATH
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-alias zshc="$EDITOR ~/.zshrc"
+alias zshc="$EDITOR $HOME/.zshrc"
+alias zshs="source $HOME/.zshrc"
+
+alias tm="tmux new-session -A -s default"
+alias tma="tmux a"
+alias clear='clear && [ -n "$TMUX" ] && tmux clear-history'
 
 if [[ -d "$HOME/.fzf/bin" && ! "$PATH" == *$HOME/.fzf/bin* ]]; then
   export PATH="$PATH:$HOME/.fzf/bin"
@@ -113,15 +118,17 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 eval "$(uv generate-shell-completion zsh)"
+eval "$(zoxide init zsh)"
 
 # Custom keybindings
 
-FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec")
+FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec" "$HOME/.config" "$HOME/.claude")
 
 fc_find_dirs() {
   for path in "${FC_SEARCH_DIRS[@]}"; do
     if [[ -d "$path" ]]; then
       "$FC_FD_CMD" --type d . "$path"
+      echo "$path"
     fi
   done
 }
@@ -136,7 +143,11 @@ _folder_changer() {
 }
 
 zle -N _folder_changer
+
+# This will actually not interfere with tmux,
+# so I will keep it there for convenience
 bindkey "^f" _folder_changer
+bindkey "^g" _folder_changer
 
 # Resolve fd path for folder changer
 FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"
