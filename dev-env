@@ -42,16 +42,27 @@ copy() {
 }
 
 if [[ $subset =~ ^(all|scripts)$ ]]; then
-  copy "./scripts/compare-solution" "$HOME/.local/bin"
+  copy "./.local/bin/compare-solution" "$HOME/.local/bin"
 
   # Copy helper scripts
   mkdir -p "$HOME/.local/bin/helpers"
   mkdir -p "$HOME/.journal"
-  copy "./.helpers/tmux-quicky" "$HOME/.local/bin/helpers"
-  copy "./.helpers/tmux-clone" "$HOME/.local/bin/helpers"
-  copy "./.helpers/journal" "$HOME/.local/bin/helpers"
+  copy "./.local/bin/helpers/tmux-quicky" "$HOME/.local/bin/helpers"
+  copy "./.local/bin/helpers/tmux-clone" "$HOME/.local/bin/helpers"
+  copy "./.local/bin/helpers/journal" "$HOME/.local/bin/helpers"
 fi
 
 if [[ $subset == "all" ]]; then
-  copy "./.dev/.zshrc" "$HOME/.zshrc"
+  copy "./.zshrc" "$HOME/.zshrc"
+
+  # Deploy .config directories
+  for dir in alacritty ghostty git opencode tms tmux zed; do
+    if [ -d "./.config/$dir" ]; then
+      log "Deploying .config/$dir"
+      mkdir -p "$XDG_CONFIG_HOME/$dir"
+      if [[ $dry_run != "1" ]]; then
+        cp -r "./.config/$dir/." "$XDG_CONFIG_HOME/$dir/"
+      fi
+    fi
+  done
 fi
