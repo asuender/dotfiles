@@ -51,4 +51,7 @@ if [[ $subset == "all" ]]; then
 
   # Deploy .claude
   copy_dir "./.claude" "$HOME/.claude"
+
+  # Deploy .shell
+  copy_dir "./.shell" "$HOME/.shell"
 fi
