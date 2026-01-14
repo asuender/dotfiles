@@ -89,13 +89,6 @@ plugins=(
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-alias zshc="$EDITOR $HOME/.zshrc"
-alias zshs="source $HOME/.zshrc"
-
-alias tm="tmux new-session -A -s default"
-alias tma="tmux a"
-alias clear='clear && [ -n "$TMUX" ] && tmux clear-history'
-
 export PATH=$HOME/.local/bin:$PATH
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 [[ -d "$HOME/.cargo/bin" && ":$PATH:" != *":$HOME/.cargo/bin:"* ]] && export PATH="$HOME/.cargo/bin:$PATH"

@@ -46,3 +46,12 @@ alias g='git'
 alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
+
+# Zsh config
+alias zshc="$EDITOR $HOME/.zshrc"
+alias zshs="source $HOME/.zshrc"
+
+# Tmux
+alias tm="tmux new-session -A -s default"
+alias tma="tmux a"
+alias clear='clear && [ -n "$TMUX" ] && tmux clear-history'
