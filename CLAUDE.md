@@ -11,9 +11,8 @@ Personal dotfiles/configuration repository for development tools and editors on 
 ### Deployment
 
 ```sh
-./dev-env all           # Deploy all configuration files
-./dev-env scripts       # Deploy scripts only
-./dev-env all --dry     # Dry run - preview changes
+./install.sh all           # Deploy all configuration files
+./install.sh scripts       # Deploy scripts only
 ```
 
 ### Testing with Docker
@@ -26,8 +25,8 @@ docker run -it -v $HOME/.config:/root/.config buildpack-deps
 
 ```sh
 # Shell scripts
-shellcheck dev-env .setup/packages .setup/packages.omarchy .setup/tools .local/bin/compare-solution
-shfmt -i 2 -w dev-env .setup/packages .setup/packages.omarchy
+shellcheck install.sh .setup/packages .setup/packages.omarchy .setup/tools .local/bin/compare-solution
+shfmt -i 2 -w install.sh .setup/packages .setup/packages.omarchy
 ```
 
 ### Package Installation (Ubuntu/Debian)
@@ -50,9 +49,9 @@ shfmt -i 2 -w dev-env .setup/packages .setup/packages.omarchy
 - `.config/` - XDG config directory mirror (alacritty, ghostty, git, tmux, zed, etc.)
 - `.local/bin/` - Scripts and helpers (deployed to `~/.local/bin/`)
 - `.setup/` - Bootstrap scripts for new machines (packages, tools)
-- `dev-env` - Main deployment script that copies configs to their destinations
+- `install.sh` - Main deployment script that copies configs to their destinations
 
-The deployment flow: `dev-env` copies files from this repo to their standard locations:
+The deployment flow: `install.sh` copies files from this repo to their standard locations:
 - `.zshrc` -> `~/.zshrc`
 - `.config/*` -> `~/.config/`
 - `.local/bin/*` -> `~/.local/bin/`

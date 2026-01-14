@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 if [[ $# -eq 0 ]]; then
-  echo "Usage: dev-env subset"
+  echo "Usage: install.sh subset"
   exit 1
 fi
 
-dry_run="0"
 subset=$1
 
 if [[ ! $subset =~ ^(all|scripts)$ ]]; then
@@ -18,26 +17,8 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
   XDG_CONFIG_HOME=$HOME/.config
 fi
 
-if [[ $2 == "--dry" ]]; then
-  echo "Running in dry run mode."
-  dry_run="1"
-fi
-
-log() {
-  if [[ $dry_run == "1" ]]; then
-    echo "[DRY_RUN]: $1"
-  else
-    echo "$1"
-  fi
-}
-
 copy() {
-  if [[ $dry_run == "1" ]]; then
-    log "Removing: $2"
-    rm "$2"
-  fi
-
-  log "Copying: $1 to $2"
+  echo "Copying: $1 to $2"
   cp "$1" "$2"
 }
 
@@ -58,11 +39,9 @@ if [[ $subset == "all" ]]; then
   # Deploy .config directories
   for dir in alacritty ghostty git opencode tms tmux zed; do
     if [ -d "./.config/$dir" ]; then
-      log "Deploying .config/$dir"
+      echo "Deploying .config/$dir"
       mkdir -p "$XDG_CONFIG_HOME/$dir"
-      if [[ $dry_run != "1" ]]; then
-        cp -r "./.config/$dir/." "$XDG_CONFIG_HOME/$dir/"
-      fi
+      cp -r "./.config/$dir/." "$XDG_CONFIG_HOME/$dir/"
     fi
   done
 fi
