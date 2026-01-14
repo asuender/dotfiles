@@ -1,0 +1,35 @@
+{
+  "cleanupPeriodDays": 7,
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(pnpm *)",
+      "Bash(npm *)",
+      "Bash(uv *)",
+      "Bash(git pull:*)",
+      "Bash(git fetch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git push)",
+      "Bash(git diff:*)",
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(git switch:*)",
+      "Bash(gh *)",
+      "Skill(commit-skill)",
+      "Edit(CLAUDE.md)",
+      "Edit(/.claude/**)",
+      "WebFetch",
+      "WebSearch",
+      "mcp__context7__*"
+    ]
+  },
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash ~/.claude/statusline.sh"
+  }
+}

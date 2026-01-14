@@ -1,0 +1,23 @@
+# Credentials and secrets
+.credentials.json
+
+# Session data
+history.jsonl
+stats-cache.json
+cache/
+debug/
+downloads/
+file-history/
+plans/
+projects/
+session-env/
+shell-snapshots/
+statsig/
+telemetry/
+todos/
+
+# Generated
+plugins/
+
+# System-managed skills (symlinks)
+skills/omarchy

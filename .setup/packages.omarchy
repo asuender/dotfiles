@@ -8,7 +8,7 @@ set -e
 
 # Official repo packages
 sudo pacman -S --needed --noconfirm \
-  shfmt shellcheck git-delta tmux fd bat
+  shfmt shellcheck git-delta tmux fd bat eza
 
 # AUR packages (via yay)
 yay -S --needed --noconfirm gum

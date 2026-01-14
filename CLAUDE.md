@@ -11,9 +11,8 @@ Personal dotfiles/configuration repository for development tools and editors on 
 ### Deployment
 
 ```sh
-./dev-env all           # Deploy all configuration files
-./dev-env scripts       # Deploy scripts only
-./dev-env all --dry     # Dry run - preview changes
+./install.sh all           # Deploy all configuration files
+./install.sh scripts       # Deploy scripts only
 ```
 
 ### Testing with Docker
@@ -26,11 +25,8 @@ docker run -it -v $HOME/.config:/root/.config buildpack-deps
 
 ```sh
 # Shell scripts
-shellcheck dev-env .setup/packages .setup/packages.omarchy .setup/tools scripts/compare-solution
-shfmt -i 2 -w dev-env .setup/packages .setup/packages.omarchy
-
-# Lua files (Neovim)
-stylua nvim/
+shellcheck install.sh .setup/packages .setup/packages.omarchy .setup/tools .local/bin/compare-solution
+shfmt -i 2 -w install.sh .setup/packages .setup/packages.omarchy
 ```
 
 ### Package Installation (Ubuntu/Debian)
@@ -49,22 +45,23 @@ stylua nvim/
 
 ## Architecture
 
-- `.dev/` - Shell environment files (.zshrc)
+- `.zshrc` - Shell configuration (deployed to `~/.zshrc`)
+- `.config/` - XDG config directory mirror (alacritty, ghostty, git, tmux, zed, etc.)
+- `.local/bin/` - Scripts and helpers (deployed to `~/.local/bin/`)
 - `.setup/` - Bootstrap scripts for new machines (packages, tools)
-- `.helpers/` - Tmux helper scripts (tmux-quicky, tmux-clone, journal)
-- `dev-env` - Main deployment script that copies configs to their destinations
-- Individual tool directories (nvim/, zed/, tmux/, ghostty/, etc.) contain per-tool configs
+- `install.sh` - Main deployment script that copies configs to their destinations
 
-The deployment flow: `dev-env` copies files from this repo to their standard locations (e.g., `.dev/.zshrc` -> `~/.zshrc`, `.helpers/*` -> `~/.local/bin/helpers/`).
+The deployment flow: `install.sh` copies files from this repo to their standard locations:
+- `.zshrc` -> `~/.zshrc`
+- `.config/*` -> `~/.config/`
+- `.local/bin/*` -> `~/.local/bin/`
 
 ## Key Tools
 
 - Python: use `uv` for everything
 - Node.js: nvm, pnpm
-- Neovim: LazyVim-based config in `nvim/lua/plugins/`
 
 ## Security
 
 - Never commit `.env` files
 - API keys go in `~/.config/.env`
-- `gh/hosts.yml` may contain tokens

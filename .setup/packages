@@ -12,7 +12,7 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 
 sudo apt update
 sudo apt install -y zsh shfmt shellcheck \
-  neovim fzf git-delta tmux fd-find bat gum shellcheck
+  neovim fzf git-delta tmux fd-find bat gum shellcheck rust-eza
 
 # Setup ZSH
 hash -r

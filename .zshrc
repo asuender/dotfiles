@@ -89,23 +89,14 @@ plugins=(
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-alias zshc="$EDITOR $HOME/.zshrc"
-alias zshs="source $HOME/.zshrc"
-
-alias tm="tmux new-session -A -s default"
-alias tma="tmux a"
-alias clear='clear && [ -n "$TMUX" ] && tmux clear-history'
-
 export PATH=$HOME/.local/bin:$PATH
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 [[ -d "$HOME/.cargo/bin" && ":$PATH:" != *":$HOME/.cargo/bin:"* ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
-# Omarchy defaults (aliases, functions, envs)
-if [[ -d "$HOME/.local/share/omarchy/default/bash" ]]; then
-  source "$HOME/.local/share/omarchy/default/bash/aliases"
-  source "$HOME/.local/share/omarchy/default/bash/functions"
-  source "$HOME/.local/share/omarchy/default/bash/envs"
-fi
+# Shell customizations (aliases, functions, envs)
+for file in "$HOME/.shell"/*.zsh; do
+  [[ -f "$file" ]] && source "$file"
+done
 
 [[ -d "/opt/homebrew/opt/python@3.12/libexec/bin" ]] &&
   export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
