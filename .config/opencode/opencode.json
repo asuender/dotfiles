@@ -7,19 +7,28 @@
     },
     "diff_style": "auto",
   },
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "ls": "allow",
+      "ls *": "allow",
+      "pnpm*": "allow",
+      "npm*": "allow",
+      "uv *": "allow",
+      "git pull*": "allow",
+      "git fetch*": "allow",
+      "git add*": "allow",
+      "git commit*": "allow",
+      "git branch*": "allow",
+      "git push*": "allow",
+      "git diff*": "allow",
+      "git status*": "allow",
+      "git log*": "allow",
+      "git checkout*": "allow",
+      "git stash*": "allow",
+      "git switch*": "allow",
+      "gh *": "allow"
+    },
+  },
   "model": "openai/gpt-5.1-codex",
-  "provider": {
-    "anthropic": {
-      "models": {
-        "claude-opus-4-5": {
-          "options": {
-            "thinking": {
-              "type": "enabled",
-              "budgetTokens": 16000,
-            }
-          }
-        }
-      }
-    }
-  }
 }

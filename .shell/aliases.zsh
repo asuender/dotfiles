@@ -54,4 +54,3 @@ alias zshs="source $HOME/.zshrc"
 # Tmux
 alias tm="tmux new-session -A -s default"
 alias tma="tmux a"
-alias clear='clear && [ -n "$TMUX" ] && tmux clear-history'
