@@ -7,6 +7,7 @@ tools=(
   "Claude Code|curl -fsSL https://claude.ai/install.sh | bash"
   "Rust (rustup)|curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
   "zoxide|curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
+  "Bun|curl -fsSL https://bun.com/install | bash"
 )
 
 # Build selection list
@@ -30,6 +31,6 @@ while IFS= read -r name; do
       break
     fi
   done
-done <<< "$selected"
+done <<<"$selected"
 
 echo "Done!"

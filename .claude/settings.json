@@ -19,6 +19,7 @@
       "Bash(git stash:*)",
       "Bash(git switch:*)",
       "Bash(gh *)",
+      "Bash(RScript *)",
       "Skill(commit-skill)",
       "Edit(CLAUDE.md)",
       "Edit(/.claude/**)",

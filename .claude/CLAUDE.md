@@ -6,9 +6,10 @@ The context window is compacted automatically; do not stop early for token limit
 
 ## Quality Principles
 
-### Style
+### General
 
 - No emojis. No em dashes - use hyphens or colons instead.
+- If you edit code and you find explaining comments, don't remove them.
 
 ### Write maintainable code
 
