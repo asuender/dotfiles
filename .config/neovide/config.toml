@@ -1,3 +1,7 @@
+frame="transparent"
+maximized = true
+tabs = true
+
 [font]
 normal = ["FiraCode Nerd Font Mono"]
 size = 16
