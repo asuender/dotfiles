@@ -14,13 +14,17 @@ allowed-tools:
   - Read
 ---
 
+# Commit context
+
+- Git status: !`git status`
+- Unstaged changes !`git diff`
+
 # Instructions
 
-1. Run `git status` to see modified and untracked files
-2. Run `git diff` to review unstaged changes
-3. Stage relevant files with `git add <files>` or `git add .`
-4. Run `git diff --staged` to confirm staged changes
-5. Create the commit following the conventional format below
+Your task is to commit the working changes in the current repo.
+
+1. Stage relevant files with `git add <files>` or `git add .`
+2. Create the commit following the conventional format below
 
 **Note:** use all `git` commands without the `-C <dir>` argument!
 
@@ -31,7 +35,7 @@ allowed-tools:
 
 [optional body]
 
-[optional footer(s)]
+[optional footer]
 ```
 
 ## Types
@@ -47,27 +51,12 @@ allowed-tools:
 | `test` | Adding or correcting tests |
 | `chore` | Maintenance tasks |
 
-## Breaking Changes
-
-Indicate breaking changes with an exclamation mark after the type:
-```
-feat!: remove deprecated API endpoint
-```
-
-Or use a footer:
-```
-feat: redesign user authentication
-
-BREAKING CHANGE: JWT tokens now expire after 1 hour
-```
-
 ## Rules
 
 - Keep subject line under 72 characters
 - Use imperative mood: "add feature" not "added feature"
-- Do not end subject with a period
 - Separate subject from body with a blank line
-- Use body to explain what and why, not how
+- Use body to explain what and why, not how, in at most 4 sentences
 
 ## Example
 
@@ -78,13 +67,5 @@ Implement OAuth2 authentication flow with support for Google and GitHub
 providers. This replaces the legacy session-based authentication.
 
 Closes #123
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-## Footer
-
-Always include at the end:
-```
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
