@@ -41,7 +41,7 @@ if [[ $subset == "all" ]]; then
   copy "./.zshrc" "$HOME/.zshrc"
 
   # Deploy .config directories
-  for dir in alacritty ghostty git opencode tms tmux zed; do
+  for dir in alacritty ghostty git opencode tms tmux zed nvim neovide; do
     if [ -d "./.config/$dir" ]; then
       copy_dir "./.config/$dir" "$XDG_CONFIG_HOME/$dir"
     fi
