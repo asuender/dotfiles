@@ -1,5 +1,5 @@
 if vim.g.neovide then
-    vim.g.neovide_theme = "light"
+    vim.g.neovide_padding_top = 5
     -- from https://github.com/neovide/neovide/issues/1263
     vim.keymap.set(
         { "n", "v", "s", "x", "o", "i", "l", "c", "t" },
