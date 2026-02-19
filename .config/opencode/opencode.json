@@ -30,5 +30,5 @@
       "gh *": "allow"
     },
   },
-  "model": "openai/gpt-5.1-codex",
+  "model": "anthropic/claude-opus-4-6",
 }

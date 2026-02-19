@@ -8,6 +8,7 @@ tools=(
   "Rust (rustup)|curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
   "zoxide|curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
   "Bun|curl -fsSL https://bun.com/install | bash"
+  "OpenCode|curl -fsSL https://opencode.ai/install | bash"
 )
 
 # Build selection list

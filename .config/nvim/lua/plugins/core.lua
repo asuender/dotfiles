@@ -1,10 +1,37 @@
 return {
-    { "olimorris/onedarkpro.nvim" },
+    -- { "olimorris/onedarkpro.nvim" },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
 
     {
         "LazyVim/LazyVim",
         opts = {
-            colorscheme = "onedark",
+            colorscheme = "tokyonight-storm",
+        },
+    },
+
+    {
+        "neovim/nvim-lspconfig",
+        opts = {
+            inlay_hints = { enabled = false },
+            diagnostics = { virtual_text = false },
+        },
+    },
+
+    {
+        "folke/trouble.nvim",
+        opts = {
+            auto_close = false,
+            restore = true,
+            modes = {
+                diagnostics = {
+                    auto_open = true,
+                },
+            },
         },
     },
 
@@ -19,6 +46,13 @@ return {
                     { section = "startup" },
                 },
             },
+        },
+    },
+
+    {
+        "numToStr/Comment.nvim",
+        opts = {
+            -- add any options here
         },
     },
 }

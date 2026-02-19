@@ -4,8 +4,8 @@ CACHE_DIR="$HOME/.cache/dev"
 FONTS_DIR="$HOME/.local/share/fonts"
 
 mkdir -p "$CACHE_DIR"
-mkdir -p "$FONTS_DIR/FiraCode"
+mkdir -p "$FONTS_DIR/CascadiaCode"
 
-curl -L "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz" -o "$CACHE_DIR/FiraCode.tar.xz" &&
-  tar -xJf "$CACHE_DIR/FiraCode.tar.xz" -C "$FONTS_DIR/FiraCode" &&
+curl -L "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaCode.tar.xz" -o "$CACHE_DIR/CascadiaCode.tar.xz" &&
+  tar -xJf "$CACHE_DIR/CascadiaCode.tar.xz" -C "$FONTS_DIR/CascadiaCode" &&
   fc-cache -fv

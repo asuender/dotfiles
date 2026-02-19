@@ -5,9 +5,13 @@ window-padding-x = 10
 window-padding-y = 10,0
 window-padding-color = background
 
-font-family = FiraCode Nerd Font Mono
-font-thicken = true
-font-size = 16
+font-family = CaskaydiaCove NFM
+font-size = 18
+
+theme = TokyoNight Storm
+
+# from: https://github.com/sahaj-b/ghostty-cursor-shaders
+# custom-shader = cursor_warp.glsl
 
 # Copy Ghostty's terminfo to new remote machines
 shell-integration-features = ssh-terminfo
