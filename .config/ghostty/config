@@ -5,7 +5,7 @@ window-padding-x = 10
 window-padding-y = 10,0
 window-padding-color = background
 
-font-family = CaskaydiaCove NFM
+font-family = CaskaydiaCove Nerd Font Mono
 font-size = 18
 
 theme = TokyoNight Storm
