@@ -52,5 +52,5 @@ alias zshc="$EDITOR $HOME/.zshrc"
 alias zshs="source $HOME/.zshrc"
 
 # Tmux
-alias tm="tmux new-session -A -s default"
-alias tma="tmux a"
+alias t="tmux new-session -A -s default"
+alias ta="tmux a"
