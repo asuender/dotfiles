@@ -24,12 +24,14 @@ return {
     {
         "folke/trouble.nvim",
         opts = {
-            auto_close = false,
+            auto_close = true,
             restore = true,
-            modes = {
-                diagnostics = {
-                    auto_open = true,
-                },
+        },
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Toggle diagnostics (Trouble)",
             },
         },
     },
