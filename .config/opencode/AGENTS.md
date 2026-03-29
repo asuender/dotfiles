@@ -16,6 +16,8 @@
 ## Language-specific rules
 
 - For Python code style and best practices: @rules/python.md
+- For Typescript code style and best practices: @rules/typescript.md
+- For Docker-related style and best practices: @rules/docker.md
 
 ## MCP
 
