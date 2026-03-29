@@ -84,81 +84,21 @@ plugins=(
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Basic stuff
+# Generic configuration
 
-export VISUAL=nvim
-export EDITOR="$VISUAL"
+source "$HOME/.shell/config.zsh"
 
-export PATH=$HOME/.local/bin:$PATH
-[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
-[[ -d "$HOME/.cargo/bin" && ":$PATH:" != *":$HOME/.cargo/bin:"* ]] && export PATH="$HOME/.cargo/bin:$PATH"
+# Stuff related to this machine
 
-# Shell customizations (aliases, functions, envs)
-for file in "$HOME/.shell"/*.zsh; do
-  [[ -f "$file" ]] && source "$file"
-done
+. "$HOME/.cargo/env"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
+export PATH="$HOME/Library/pnpm"
 
-[[ -d "/opt/homebrew/opt/python@3.12/libexec/bin" ]] &&
-  export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
-
-# pnpm: check macOS and Linux paths
-if [[ -d "$HOME/Library/pnpm" ]]; then
-  export PNPM_HOME="$HOME/Library/pnpm"
-elif [[ -d "$HOME/.local/share/pnpm" ]]; then
-  export PNPM_HOME="$HOME/.local/share/pnpm"
-fi
-[[ -n "$PNPM_HOME" && ":$PATH:" != *":$PNPM_HOME:"* ]] && export PATH="$PNPM_HOME:$PATH"
-
-# Shell completions
-
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-if [[ -d "$HOME/.fzf/bin" && ! "$PATH" == *$HOME/.fzf/bin* ]]; then
-  export PATH="$PATH:$HOME/.fzf/bin"
-fi
-
-source <(fzf --zsh)
-eval "$(uv generate-shell-completion zsh)"
-eval "$(zoxide init zsh)"
-
-export TMS_CONFIG_FILE="$HOME/.config/tms/config.toml"
-
-# Custom keybindings
-
-FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec" "$HOME/.config" "$HOME/.claude")
-
-fc_find_dirs() {
-  for path in "${FC_SEARCH_DIRS[@]}"; do
-    if [[ -d "$path" ]]; then
-      "$FC_FD_CMD" --type d . "$path"
-      echo "$path"
-    fi
-  done
-}
-
-_folder_changer() {
-  local dir=$(fc_find_dirs | fzf)
-  if [ -n "$dir" ]; then
-    zle push-input
-    cd "$dir" || return
-    zle accept-line
-  fi
-}
-
-zle -N _folder_changer
-
-# This will actually not interfere with tmux,
-# so I will keep it there for convenience
-bindkey "^f" _folder_changer
-bindkey "^g" _folder_changer
-
-# Resolve fd path for folder changer
-FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"
-
+. "$NVM_DIR/nvm.sh" 
+. "$NVM_DIR/bash_completion"

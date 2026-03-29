@@ -47,7 +47,6 @@ if [[ $subset == "all" ]]; then
     fi
   done
 
-  copy_dir "./.claude" "$HOME/.claude"
   copy_dir "./.shell" "$HOME/.shell"
   copy_dir "./.templates" "$HOME/.templates"
 fi
