@@ -14,7 +14,7 @@ export PATH=$HOME/.local/bin:$PATH
 
 # Shell customizations (aliases, functions, envs)
 for file in "$HOME/.shell"/*.zsh; do
-  [[ -f "$file" ]] && source "$file"
+  [[ -f "$file" && "$file" != "$HOME/.shell/config.zsh" ]] && source "$file"
 done
 
 # Shell completions
