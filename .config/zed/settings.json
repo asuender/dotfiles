@@ -1,4 +1,3 @@
-// Zed settings
 //
 // For information on how to configure Zed, see the Zed
 // documentation: https://zed.dev/docs/configuring-zed
@@ -18,7 +17,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "One Dark Pro",
+    "dark": "Tokyo Night Storm",
   },
   "diagnostics": {
     "inline": {
@@ -29,6 +28,7 @@
   "auto_install_extensions": {
     "html": true,
     "material-icon-theme": true,
+    "tokyo-night": true,
     "one-dark-pro": true,
     "toml": true,
     "basher": true,

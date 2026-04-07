@@ -93,7 +93,7 @@ source "$HOME/.shell/config.zsh"
 . "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
-export PATH="$HOME/Library/pnpm"
+export PATH="$HOME/Library/pnpm:$PATH"
 
 source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
