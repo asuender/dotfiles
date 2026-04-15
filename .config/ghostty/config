@@ -8,7 +8,7 @@ window-padding-color = background
 font-family = CaskaydiaCove Nerd Font Mono
 font-size = 18
 
-theme = TokyoNight Storm
+theme = Catppuccin Macchiato
 
 # from: https://github.com/sahaj-b/ghostty-cursor-shaders
 # custom-shader = cursor_warp.glsl

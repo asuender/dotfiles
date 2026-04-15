@@ -6,10 +6,13 @@ return {
         opts = {},
     },
 
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+
     {
         "LazyVim/LazyVim",
         opts = {
-            colorscheme = "tokyonight-storm",
+            -- colorscheme = "tokyonight-storm",
+            colorscheme = "catppuccin-macchiato",
         },
     },
 
