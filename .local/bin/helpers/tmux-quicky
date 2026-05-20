@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-printf "$ "
-read -r cmd
-eval "$cmd"
-echo
-echo "[Press Enter to close]"
-read -r

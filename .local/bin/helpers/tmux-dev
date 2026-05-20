@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+session=$(tmux display-message -p '#{session_name}')
+cwd=$(tmux display-message -p '#{pane_current_path}')
+ai="${*:-opencode}"
+ai_name="${1:-opencode}"
+ai_name="${ai_name%% *}"
+
+# Skip if the setup was already created.
+window_count=$(tmux display-message -p '#{session_windows}')
+if [ "$window_count" -gt 1 ]; then
+  exit 0
+fi
+
+tmux new-window -t "$session" -n "nvim" -c "$cwd" "${EDITOR:-nvim} ."
+tmux new-window -t "$session" -n "$ai_name" -c "$cwd" "$ai"
+
+tmux select-window -t "$session:nvim"

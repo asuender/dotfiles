@@ -12,6 +12,8 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 export PATH=$HOME/.local/bin:$PATH
 
+export HOMEBREW_NO_ENV_HINTS=1
+
 # Shell customizations (aliases, functions, envs)
 for file in "$HOME/.shell"/*.zsh; do
   [[ -f "$file" && "$file" != "$HOME/.shell/config.zsh" ]] && source "$file"
@@ -54,4 +56,3 @@ bindkey "^g" _folder_changer
 
 # Resolve fd path for folder changer
 FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"
-

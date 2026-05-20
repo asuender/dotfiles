@@ -36,9 +36,8 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Tool shortcuts
-alias c='opencode'
+alias c='chezmoi'
 alias d='docker'
-alias r='rails'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
 # Git shortcuts
