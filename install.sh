@@ -32,9 +32,9 @@ if [[ $subset =~ ^(all|config|scripts)$ ]]; then
   # Copy helper scripts
   mkdir -p "$HOME/.local/bin/helpers"
   mkdir -p "$HOME/.journal"
-  copy "./.local/bin/helpers/tmux-quicky" "$HOME/.local/bin/helpers"
   copy "./.local/bin/helpers/tmux-clone" "$HOME/.local/bin/helpers"
-  copy "./.local/bin/helpers/journal" "$HOME/.local/bin/helpers"
+  copy "./.local/bin/helpers/tmux-dev" "$HOME/.local/bin/helpers"
+  copy "./.local/bin/helpers/tmux-dev-threesome" "$HOME/.local/bin/helpers"
 fi
 
 if [[ $subset =~ ^(all|config)$ ]]; then
