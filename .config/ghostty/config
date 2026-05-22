@@ -7,8 +7,11 @@ window-padding-color = background
 
 font-family = CaskaydiaCove Nerd Font Mono
 font-size = 18
+adjust-cell-width = -5%
 
-theme = Catppuccin Macchiato
+keybind = shift+enter=text:\n
+
+theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
 
 # from: https://github.com/sahaj-b/ghostty-cursor-shaders
 # custom-shader = cursor_warp.glsl
