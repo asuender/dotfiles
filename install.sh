@@ -52,4 +52,5 @@ if [[ $subset =~ ^(all|config)$ ]]; then
   copy_dir "./.shell" "$HOME/.shell"
   copy_dir "./.templates" "$HOME/.templates"
   copy_dir "./.agents" "$HOME/.agents"
+  copy_dir "./.pi" "$HOME/.pi"
 fi

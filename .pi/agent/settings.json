@@ -1,0 +1,19 @@
+{
+  "lastChangelogVersion": "0.75.5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
+  "hideThinkingBlock": true,
+  "theme": "catppuccin-macchiato",
+  "quietStartup": true,
+  "packages": [
+    {
+      "source": "npm:pi-web-access",
+      "extensions": []
+    },
+    {
+      "source": "npm:@ff-labs/pi-fff",
+      "extensions": []
+    }
+  ]
+}
