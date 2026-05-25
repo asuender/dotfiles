@@ -11,6 +11,7 @@
 import type { ExtensionAPI, ToolRenderContext } from "@earendil-works/pi-coding-agent";
 import webAccessExtension from "../npm/node_modules/pi-web-access/index.ts";
 import fffExtension from "../npm/node_modules/@ff-labs/pi-fff/src/index.ts";
+import sandboxExtension from "../npm/node_modules/pi-sandbox/index.ts";
 import {
   createBashTool,
   createEditTool,
@@ -137,14 +138,28 @@ function capturePackageTools(pi: ExtensionAPI, registerPackage: (api: ExtensionA
   return tools;
 }
 
+function capturePackageToolsWithLifecycle(pi: ExtensionAPI, registerPackage: (api: ExtensionAPI) => void): Map<string, PackageTool> {
+  const tools = new Map<string, PackageTool>();
+  const proxy = new Proxy(pi as any, {
+    get(target, prop) {
+      if (prop === "registerTool") return (tool: PackageTool) => tools.set(tool.name, tool);
+      const value = target[prop as keyof typeof target];
+      return typeof value === "function" ? value.bind(target) : value;
+    },
+  }) as ExtensionAPI;
+  registerPackage(proxy);
+  return tools;
+}
+
 function overridePackageTool(pi: ExtensionAPI, tool: PackageTool | undefined, renderCall: RenderCall, nouns?: Nouns) {
   if (!tool) return;
   pi.registerTool({ ...tool, renderShell: "self", renderCall, renderResult: result(nouns) } as any);
 }
 
-function registerPackageTools(pi: ExtensionAPI) {
+function registerPackageTools(pi: ExtensionAPI): PackageTool | undefined {
   const webTools = capturePackageTools(pi, webAccessExtension as any);
   const fffTools = capturePackageTools(pi, fffExtension as any);
+  const sandboxTools = capturePackageToolsWithLifecycle(pi, sandboxExtension as any);
 
   // Same extension owns package tools + overrides, avoiding cross-extension conflicts.
   webAccessExtension(pi);
@@ -223,6 +238,8 @@ function registerPackageTools(pi: ExtensionAPI) {
     }),
     ["file", "files"],
   );
+
+  return sandboxTools.get("bash");
 }
 
 function overrideBuiltIn<K extends keyof ReturnType<typeof createBuiltInTools>>(
@@ -242,7 +259,7 @@ function overrideBuiltIn<K extends keyof ReturnType<typeof createBuiltInTools>>(
   } as any);
 }
 
-function registerBuiltInTools(pi: ExtensionAPI) {
+function registerBuiltInTools(pi: ExtensionAPI, sandboxBash: PackageTool | undefined) {
   overrideBuiltIn(
     pi,
     "read",
@@ -257,11 +274,16 @@ function registerBuiltInTools(pi: ExtensionAPI) {
     }),
   );
 
-  overrideBuiltIn(pi, "bash", call("bash", (args, theme, context) => {
+  const renderBash = call("bash", (args, theme, context) => {
     let text = withTitle("$", theme, context, theme.fg("accent", args.command || "..."));
     if (args.timeout) text += theme.fg("dim", ` (timeout ${args.timeout}s)`);
     return text;
-  }));
+  });
+  if (sandboxBash) {
+    overridePackageTool(pi, sandboxBash, renderBash);
+  } else {
+    overrideBuiltIn(pi, "bash", renderBash);
+  }
 
   overrideBuiltIn(pi, "write", call("write", (args, theme, context) => {
     let text = withTitle("write", theme, context, theme.fg("accent", shortenPath(args.path || "...")));
@@ -301,6 +323,6 @@ function registerBuiltInTools(pi: ExtensionAPI) {
 }
 
 export default function minimalMode(pi: ExtensionAPI) {
-  registerPackageTools(pi);
-  registerBuiltInTools(pi);
+  const sandboxBash = registerPackageTools(pi);
+  registerBuiltInTools(pi, sandboxBash);
 }

@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "filesystem": {
+    "allowRead": [
+      ".",
+      "~/.agents",
+      "~/.pi",
+      "~/.config",
+      "~/.shell",
+      "~/.local",
+      "~/.nvm",
+      "~/coding"
+    ],
+    "allowWrite": [
+      ".",
+      "/tmp",
+      "/private/tmp"
+    ]
+  }
+}

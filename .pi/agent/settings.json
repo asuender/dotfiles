@@ -14,6 +14,10 @@
     {
       "source": "npm:@ff-labs/pi-fff",
       "extensions": []
+    },
+    {
+      "source": "npm:pi-sandbox",
+      "extensions": []
     }
   ]
 }
