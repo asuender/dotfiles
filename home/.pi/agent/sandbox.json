@@ -1,0 +1,32 @@
+{
+  "enabled": true,
+  "filesystem": {
+    "allowRead": [
+      ".",
+      ".git",
+      "~/.gitconfig",
+      "~/.agents",
+      "~/.pi",
+      "~/.config",
+      "~/.shell",
+      "~/.local",
+      "~/.nvm",
+      "~/coding",
+      "~/.claude",
+      "~/.templates",
+      "~/.dotfiles-stow-backup"
+    ],
+    "allowWrite": [
+      ".",
+      "/tmp",
+      "/private/tmp",
+      "~/.config",
+      "~/.agents",
+      "~/.claude",
+      "~/.shell",
+      "~/.templates",
+      "~/.local",
+      "~/.dotfiles-stow-backup"
+    ]
+  }
+}

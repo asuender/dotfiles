@@ -1,56 +1,52 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: $0 {all|home|zshrc}"
+}
 
 if [[ $# -eq 0 ]]; then
-  echo "Usage: install.sh subset"
+  usage
   exit 1
 fi
 
 subset=$1
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ ! $subset =~ ^(all|config|scripts)$ ]]; then
-  echo "Invalid subset '$subset'. Exiting."
-  exit 1
-fi
-
-if [ -z "$XDG_CONFIG_HOME" ]; then
-  echo "\$XDG_CONFIG_HOME not set, using ~/.config"
-  XDG_CONFIG_HOME=$HOME/.config
-fi
-
-copy() {
-  echo "Copying: $1 to $2"
-  cp "$1" "$2"
-}
-
-copy_dir() {
-  echo "Deploying $1 to $2"
-  mkdir -p "$2"
-  cp -r "$1/." "$2/"
-}
-
-if [[ $subset =~ ^(all|config|scripts)$ ]]; then
-  # Copy helper scripts
-  mkdir -p "$HOME/.local/bin/helpers"
-  mkdir -p "$HOME/.journal"
-  copy "./.local/bin/helpers/tmux-clone" "$HOME/.local/bin/helpers"
-  copy "./.local/bin/helpers/tmux-dev" "$HOME/.local/bin/helpers"
-  copy "./.local/bin/helpers/tmux-dev-threesome" "$HOME/.local/bin/helpers"
-fi
-
-if [[ $subset =~ ^(all|config)$ ]]; then
-  if [[ $subset == "all" ]]; then
-    copy "./.zshrc" "$HOME/.zshrc"
+require_stow() {
+  if ! command -v stow >/dev/null 2>&1; then
+    echo "GNU Stow is required. Install it with 'brew install stow', 'sudo apt install stow', or your distro package manager."
+    exit 1
   fi
+}
 
-  # Deploy .config directories
-  for dir in alacritty ghostty git opencode tms tmux zed nvim neovide; do
-    if [ -d "./.config/$dir" ]; then
-      copy_dir "./.config/$dir" "$XDG_CONFIG_HOME/$dir"
-    fi
-  done
+stow_home() {
+  require_stow
+  (
+    cd "$repo_dir"
+    stow -t "$HOME" home
+  )
+}
 
-  copy_dir "./.shell" "$HOME/.shell"
-  copy_dir "./.templates" "$HOME/.templates"
-  copy_dir "./.agents" "$HOME/.agents"
-  copy_dir "./.pi" "$HOME/.pi"
-fi
+copy_zshrc() {
+  echo "Copying: $repo_dir/.zshrc to $HOME/.zshrc"
+  cp "$repo_dir/.zshrc" "$HOME/.zshrc"
+}
+
+case "$subset" in
+all)
+  stow_home
+  copy_zshrc
+  ;;
+home)
+  stow_home
+  ;;
+zshrc)
+  copy_zshrc
+  ;;
+*)
+  echo "Invalid subset '$subset'."
+  usage
+  exit 1
+  ;;
+esac

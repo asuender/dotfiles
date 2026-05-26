@@ -1,0 +1,24 @@
+# Override GNU Stow's default ignore list so managed .gitignore files are stowed.
+
+RCS
+.+,v
+
+CVS
+\.\#.+
+\.cvsignore
+
+\.svn
+_darcs
+\.hg
+
+\.git
+\.gitmodules
+
+node_modules
+
+.+~
+\#.*\#
+
+^/README.*
+^/LICENSE.*
+^/COPYING
