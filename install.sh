@@ -20,11 +20,15 @@ require_stow() {
   fi
 }
 
-stow_home() {
+stow_package() {
+  if [ -z "$1" ]; then
+    echo "Error: no package name supplied"
+  fi
+
   require_stow
   (
     cd "$repo_dir"
-    stow -t "$HOME" home
+    stow -t "$HOME" $1
   )
 }
 
@@ -35,11 +39,14 @@ copy_zshrc() {
 
 case "$subset" in
 all)
-  stow_home
+  stow_package home
   copy_zshrc
   ;;
 home)
-  stow_home
+  stow_package home
+  ;;
+hetzner)
+  stow_package hetzner
   ;;
 zshrc)
   copy_zshrc
