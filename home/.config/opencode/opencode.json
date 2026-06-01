@@ -51,5 +51,10 @@
       ],
       "enabled": true
     },
+    "exa": {
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp",
+      "enabled": true
+    }
   },
 }

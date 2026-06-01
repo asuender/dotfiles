@@ -63,6 +63,15 @@
       "skillFolderHash": "2147719da5f81255dbf960d6ce46d5a7ee9d0860",
       "installedAt": "2026-04-12T07:28:57.317Z",
       "updatedAt": "2026-05-03T08:25:25.077Z"
+    },
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/agent-browser/SKILL.md",
+      "skillFolderHash": "c1470a475a0472fceda2401ea6763708a91680a8",
+      "installedAt": "2026-06-01T21:45:30.869Z",
+      "updatedAt": "2026-06-01T21:45:30.869Z"
     }
   },
   "dismissed": {
@@ -75,12 +84,14 @@
     "codex",
     "cursor",
     "deepagents",
+    "dexto",
     "firebender",
     "gemini-cli",
     "github-copilot",
     "kimi-cli",
     "opencode",
     "warp",
+    "zed",
     "claude-code"
   ]
 }
