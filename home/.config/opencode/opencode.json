@@ -1,49 +1,46 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "permission": {
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    },
     "bash": {
       "*": "ask",
       "ls": "allow",
       "ls *": "allow",
-      "pnpm*": "allow",
-      "npm*": "allow",
+      "pnpm *": "allow",
+      "npm *": "allow",
       "uv *": "allow",
-      "git pull*": "allow",
-      "git fetch*": "allow",
-      "git add*": "allow",
-      "git commit*": "allow",
-      "git branch*": "allow",
-      "git push*": "allow",
-      "git diff*": "allow",
-      "git status*": "allow",
-      "git log*": "allow",
-      "git checkout*": "allow",
-      "git stash*": "allow",
-      "git switch*": "allow",
+      "git pull *": "allow",
+      "git fetch *": "allow",
+      "git add *": "allow",
+      "git commit *": "allow",
+      "git branch *": "allow",
+      "git push *": "allow",
+      "git diff *": "allow",
+      "git status *": "allow",
+      "git log *": "allow",
+      "git checkout *": "allow",
+      "git stash *": "allow",
+      "git switch *": "allow",
       "gh *": "allow",
-      "head*": "allow",
-      "tail*": "allow",
-      "cat*": "allow",
-      "wc*": "allow",
-      "find*": "allow",
-      "grep*": "allow",
-      "rg*": "allow",
-      "file*": "allow",
-      "which*": "allow",
-      "echo*": "allow"
+      "head *": "allow",
+      "tail *": "allow",
+      "cat *": "allow",
+      "wc *": "allow",
+      "find *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "file *": "allow",
+      "which *": "allow",
+      "echo *": "allow"
     },
-  },
-  "formatter": {
-    "styler": {
-      "command": [
-        "R",
-        "-e",
-        "styler::style_file('$FILE')"
-      ],
-      "extensions": [
-        ".R",
-        ".r"
-      ]
+    "external_directory": {
+      "~/coding/**": "allow",
+      "~/mermec/**": "allow"
     }
   },
   "mcp": {
@@ -53,6 +50,6 @@
         "fff-mcp"
       ],
       "enabled": true
-    }
-  }
+    },
+  },
 }
