@@ -47,8 +47,8 @@ alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
 
 # Zsh config
-alias zshc="$EDITOR $HOME/.zshrc"
-alias zshs="source $HOME/.zshrc"
+alias zc="$EDITOR $HOME/.zshrc"
+alias zs="source $HOME/.zshrc"
 
 # Tmux
 alias t="tmux new-session -A -s default"
