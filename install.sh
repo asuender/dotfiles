@@ -2,7 +2,12 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 {all|home|zshrc}"
+  echo "Usage: $0 {personal|vps|common|zshrc}"
+  echo ""
+  echo "  personal  Stow common + personal packages and copy .zshrc"
+  echo "  vps       Stow common + vps packages"
+  echo "  common    Stow common package only"
+  echo "  zshrc     Copy .zshrc only"
 }
 
 if [[ $# -eq 0 ]]; then
@@ -38,15 +43,17 @@ copy_zshrc() {
 }
 
 case "$subset" in
-all)
-  stow_package home
+personal)
+  stow_package common
+  stow_package personal
   copy_zshrc
   ;;
-home)
-  stow_package home
+vps)
+  stow_package common
+  stow_package vps
   ;;
-hetzner)
-  stow_package hetzner
+common)
+  stow_package common
   ;;
 zshrc)
   copy_zshrc

@@ -4,15 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Personal dotfiles/configuration repository for development tools and editors on macOS/Linux.
+Personal dotfiles/configuration repository for development tools and editors on macOS/Linux, managed with GNU Stow.
 
 ## Commands
 
 ### Deployment
 
 ```sh
-./install.sh all           # Deploy all configuration files
-./install.sh scripts       # Deploy scripts only
+./install.sh personal      # Stow common + personal packages, copy .zshrc (personal machine)
+./install.sh vps           # Stow common + vps packages (VPS)
+./install.sh common        # Stow shared package only
 ```
 
 ### Testing with Docker
@@ -45,16 +46,15 @@ shfmt -i 2 -w install.sh .setup/packages .setup/packages.omarchy
 
 ## Architecture
 
-- `.zshrc` - Shell configuration (deployed to `~/.zshrc`)
-- `.config/` - XDG config directory mirror (alacritty, ghostty, git, tmux, zed, etc.)
-- `.local/bin/` - Scripts and helpers (deployed to `~/.local/bin/`)
-- `.setup/` - Bootstrap scripts for new machines (packages, tools)
-- `install.sh` - Main deployment script that copies configs to their destinations
+Stow packages and their purpose:
 
-The deployment flow: `install.sh` copies files from this repo to their standard locations:
-- `.zshrc` -> `~/.zshrc`
-- `.config/*` -> `~/.config/`
-- `.local/bin/*` -> `~/.local/bin/`
+- **`common/`** — shared config deployed on all machines: nvim, git, ghostty, zsh helpers, agents, claude settings, etc.
+- **`personal/`** — personal-machine tmux config (GUI app bindings, theme)
+- **`vps/`** — VPS tmux config (personal config + OSC 52 clipboard passthrough terminal overrides)
+
+Other files:
+- `.zshrc` — shell config, copied manually because it is machine-specific
+- `.setup/` — bootstrap scripts for new machines
 
 ## Key Tools
 
