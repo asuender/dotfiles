@@ -4,10 +4,11 @@ Personal dotfiles managed with GNU Stow.
 
 ## Layout
 
-- `home/` - canonical Stow package for shared home-directory config
-- `.zshrc` - copied manually because it is machine-specific
-
-The `home/` package contains shared files such as `.config/`, `.shell/`, `.local/bin/`, `.agents/`, `.claude/`, `.pi/`, and `.templates/`.
+| Package    | Purpose                                                  | Machines          |
+|------------|----------------------------------------------------------|-------------------|
+| `common/`  | Shared config for all machines (nvim, zsh, git, etc.)   | personal + VPS    |
+| `personal/`| Personal-machine-only config (tmux with GUI bindings)    | personal only     |
+| `vps/`     | VPS-specific config (tmux + OSC 52 clipboard passthrough)| VPS only          |
 
 ## Install
 
@@ -22,24 +23,26 @@ sudo apt install stow
 Then install:
 
 ```sh
-./install.sh all    # Stow home package and copy .zshrc
-./install.sh home   # Stow shared home package only
-./install.sh zshrc  # Copy .zshrc only
+# On a personal machine
+./install.sh personal   # Stow common + personal, copy .zshrc
+
+# On a VPS
+./install.sh vps        # Stow common + vps
+
+# Individual packages
+./install.sh common     # Stow common package only
+./install.sh zshrc      # Copy .zshrc only
 ```
 
-If Stow reports `cannot stow ... over existing target`, move the existing copied files out of the way first. This is expected during the first migration from copied files to symlinks.
-
-Example:
+If Stow reports `cannot stow ... over existing target`, move the existing files out of the way first:
 
 ```sh
-mv ~/.shell ~/.shell.backup
-mv ~/.agents ~/.agents.backup
-mv ~/.claude ~/.claude.backup
-mv ~/.templates ~/.templates.backup
 mv ~/.config/nvim ~/.config/nvim.backup
+mv ~/.shell ~/.shell.backup
+# etc.
 ```
 
-Generated directories such as `~/.config/opencode/node_modules` are intentionally not tracked and can stay in the target directory as long as they are not present in this repo.
+Generated directories such as `~/.config/opencode/node_modules` are intentionally not tracked and can stay in the target directory.
 
 ## Testing with Docker
 
