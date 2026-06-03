@@ -1,8 +1,4 @@
-bookmarks = [
-    "$HOME/.config",
-    "$HOME/.claude",
-    "$HOME/coding",
-]
+bookmarks = ["$HOME/.config", "$HOME/.claude", "$HOME/coding"]
 
 [[search_dirs]]
 path = "$HOME/coding"
@@ -12,3 +8,6 @@ depth = 5
 path = "$HOME/mermec/"
 depth = 5
 
+[[search_dirs]]
+path = "/workspace/"
+depth = 5
