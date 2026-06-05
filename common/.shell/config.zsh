@@ -1,5 +1,5 @@
-# Common configuration to be used across all machines
-# using this setup
+# Common configuration to be used across all machines using this setup
+
 
 # Constants etc.
 
