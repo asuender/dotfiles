@@ -9,6 +9,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="local"
+PROMPT_HEAD=""
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
