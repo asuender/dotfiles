@@ -10,7 +10,7 @@ font-family = CaskaydiaCove Nerd Font Mono
 font-size = 18
 adjust-cell-width = -5%
 
-keybind = shift+enter=text:\n
+keybind = alt+backspace=text:\x1b\x7f
 shell-integration-features = ssh-env,ssh-terminfo
 
 # This ensures I can press Alt-1,2,... for tmux
