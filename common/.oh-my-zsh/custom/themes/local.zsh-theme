@@ -1,4 +1,4 @@
-PROMPT='%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{➜%} ) '
+PROMPT='%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{➜%}) '
 
 if [[ -n "$PROMPT_HEAD" ]]; then
   PROMPT+='%{$fg_bold[yellow]%}[$PROMPT_HEAD] '
