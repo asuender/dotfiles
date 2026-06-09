@@ -27,10 +27,5 @@
       "WebSearch",
       "mcp__context7__*"
     ]
-  },
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "/bin/bash ~/.claude/statusline.sh"
   }
 }
