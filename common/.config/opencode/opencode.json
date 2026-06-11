@@ -4,7 +4,6 @@
     "read": {
       "*": "allow",
       "*.env": "deny",
-      "*.env.*": "deny",
       "*.env.example": "allow"
     },
     "bash": {
@@ -44,13 +43,6 @@
     }
   },
   "mcp": {
-    "fff": {
-      "type": "local",
-      "command": [
-        "fff-mcp"
-      ],
-      "enabled": true
-    },
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp",
@@ -61,5 +53,5 @@
       "url": "https://mcp.context7.com/mcp/oauth",
       "enabled": true
     }
-  },
+  }
 }
