@@ -35,7 +35,9 @@
       "rg *": "allow",
       "file *": "allow",
       "which *": "allow",
-      "echo *": "allow"
+      "echo *": "allow",
+      "jq *": "allow",
+      "go *": "allow"
     },
     "external_directory": {
       "~/coding/**": "allow",
@@ -53,5 +55,8 @@
       "url": "https://mcp.context7.com/mcp/oauth",
       "enabled": true
     }
-  }
+  },
+  "plugin": [
+    "octto",
+  ]
 }
