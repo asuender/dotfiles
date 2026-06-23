@@ -58,5 +58,6 @@
   },
   "plugin": [
     "octto",
+    "file:///Users/asuender/coding/ponytail/.opencode/plugins/ponytail.js"
   ]
 }

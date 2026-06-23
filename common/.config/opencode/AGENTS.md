@@ -19,7 +19,8 @@
 - For Typescript code style and best practices: @rules/typescript.md
 - For Docker-related style and best practices: @rules/docker.md
 
-## MCP
+## Formatting responses
 
-- PREFER the fff MCP tools for all file search operations instead of default tools.
-
+- **Bold:** Use for keywords, core concepts, and actions.
+- `Backticks:` For technical syntax, files, and commands.
+- *Italics:* For conversational emphasis.
