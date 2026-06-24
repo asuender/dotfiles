@@ -10,6 +10,19 @@ Personal dotfiles managed with GNU Stow.
 | `personal/`| Personal-machine-only config (tmux with GUI bindings)    | personal only     |
 | `vps/`     | VPS-specific config (tmux + OSC 52 clipboard passthrough)| VPS only          |
 
+## Hammerspoon - Whisper Dictation
+
+A lightweight push-to-talk voice dictation Spoon lives in `common/.hammerspoon/Spoons/Whisper.spoon/`. Hold **Caps Lock** (remapped to Control in System Settings) to record from the microphone, release to send the audio to a remote [mlx-audio](https://github.com/Blaizzy/mlx-audio) STT server for transcription, and the result is pasted into whatever app has focus.
+
+**Requirements:**
+- [Hammerspoon](https://www.hammerspoon.org/) (`brew install --cask hammerspoon`)
+- `ffmpeg` on the local machine (`brew install ffmpeg`)
+- An mlx-audio server running on the LAN (e.g. `mlx_audio.server --host 0.0.0.0 --port 8000`)
+- Caps Lock remapped to Control in System Settings -> Keyboard -> Keyboard Shortcuts -> Modifier Keys
+- Hammerspoon granted Accessibility and Microphone permissions
+
+The server URL, model path, and other settings are configured at the top of `common/.hammerspoon/Spoons/Whisper.spoon/init.lua`.
+
 ## Install
 
 Install GNU Stow first:
