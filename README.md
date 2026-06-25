@@ -21,6 +21,8 @@ A lightweight push-to-talk voice dictation Spoon lives in `common/.hammerspoon/S
 - Caps Lock remapped to Control in System Settings -> Keyboard -> Keyboard Shortcuts -> Modifier Keys
 - Hammerspoon granted Accessibility and Microphone permissions
 
+**Optional - Groq refinement:** If the `GROQ_API_KEY` environment variable is set, raw transcriptions are sent to [Groq](https://groq.com) (`openai/gpt-oss-120b`) for context-aware refinement before pasting. This fixes common STT errors like literal symbol spellings ("slash" instead of "/") and misheard technical terms. If the key is unset or the request fails, the raw transcription is pasted directly.
+
 The server URL, model path, and other settings are configured at the top of `common/.hammerspoon/Spoons/Whisper.spoon/init.lua`.
 
 ## Install
