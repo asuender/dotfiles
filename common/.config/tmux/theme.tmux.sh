@@ -50,7 +50,8 @@ tmux set -g @tmux-dotbar-justify "left"
 tmux set -g @tmux-dotbar-right "false"
 tmux set -g @tmux-dotbar-bold-session "true"
 tmux set -g @tmux-dotbar-bold-current-window "true"
-tmux set -g @tmux-dotbar-session-text " #S "
+tmux set -g @tmux-dotbar-session-text " #{=30:session_name} "
+tmux set -g @tmux-dotbar-status-left-length 40
 tmux set -g @tmux-dotbar-window-status-separator "•"
 tmux set -g @tmux-dotbar-rounded true
 

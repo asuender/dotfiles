@@ -24,6 +24,8 @@ status=$(get_tmux_option "@tmux-dotbar-position" "bottom")
 justify=$(get_tmux_option "@tmux-dotbar-justify" "absolute-centre")
 left_state=$(get_tmux_option "@tmux-dotbar-left" true)
 right_state=$(get_tmux_option "@tmux-dotbar-right" false)
+status_left_length=$(get_tmux_option "@tmux-dotbar-status-left-length" 40)
+status_right_length=$(get_tmux_option "@tmux-dotbar-status-right-length" 40)
 
 # Status Components
 session_text=$(get_tmux_option "@tmux-dotbar-session-text" " #S ")
@@ -93,6 +95,8 @@ show_maximized_icon_for_all_tabs=$(get_tmux_option "@tmux-dotbar-show-maximized-
 # Apply Options
 tmux set-option -g status-position "$status"
 tmux set-option -g status-justify "$justify"
+tmux set-option -g status-left-length "$status_left_length"
+tmux set-option -g status-right-length "$status_right_length"
 tmux set-option -g status-left "$status_left"
 tmux set-option -g status-right "$status_right"
 tmux set-window-option -g window-status-separator "$window_status_separator"
