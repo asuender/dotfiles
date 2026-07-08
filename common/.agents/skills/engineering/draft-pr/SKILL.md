@@ -10,15 +10,16 @@ Commit all changes, push to remote, and create a draft pull request with a focus
 
 ## Steps
 
+1. Verify base branch (could be `main`, `development`, `dev`, etc.)
 1. Run `git status` to see changes
-2. Run `git diff` to understand what changed
-3. Run `git log` to see commit message style
-4. If on `main`, create a new branch in the format `<initials>/<feature>` or the project's branch naming convention, then switch to it
-5. Stage and commit changes with a concise message
-6. Push branch to remote with `-u` flag
-7. Generate the PR description using the project's pr description format found in `.github/pull_request_template.md` or, if not available, the fallback format (see below).
-8. Create draft PR using `gh pr create --draft`
-9. If you created the branch (were on `main`), switch back to `main` after the PR is created
+1. Run `git diff` to understand what changed
+1. Run `git log` to see commit message style
+1. If on the base branch, create a new branch in the format `<initials>/<feature>` or the project's branch naming convention, then switch to it
+1. Stage and commit changes with a concise message
+1. Push branch to remote with `-u` flag
+1. Generate the PR description using the project's pr description format found in `.github/pull_request_template.md` or, if not available, the fallback format (see below).
+1. Create draft PR using `gh pr create --draft`
+1. If you created the branch (were on base branch), switch back to the base branch after the PR is created
 
 ## Fallback PR Body Format
 
