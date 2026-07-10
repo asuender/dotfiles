@@ -1,6 +1,6 @@
 ---
 name: draft-pr
-description: Commit, push, and create a draft PR using the project's or a fallback pr description format.
+description: Commit, push, and create a draft PR using the project's or a fallback pr description format. Also use when user asks to create or draft a PR.
 user-invocable: true
 ---
 
