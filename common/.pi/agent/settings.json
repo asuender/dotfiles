@@ -1,11 +1,10 @@
 {
-  "lastChangelogVersion": "0.78.1",
+  "lastChangelogVersion": "0.80.6",
   "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k2.6",
+  "defaultModel": "glm-5.2",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
   "theme": "catppuccin-macchiato",
-  "quietStartup": true,
   "packages": [
     {
       "source": "npm:pi-web-access",
@@ -13,10 +12,6 @@
     },
     {
       "source": "npm:@ff-labs/pi-fff",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-sandbox",
       "extensions": []
     }
   ]
