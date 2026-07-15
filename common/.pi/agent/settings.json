@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.80.6",
+  "lastChangelogVersion": "0.80.7",
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.2",
   "defaultThinkingLevel": "medium",
