@@ -1,9 +1,10 @@
 {
-  "lastChangelogVersion": "0.80.7",
-  "defaultProvider": "opencode-go",
-  "defaultModel": "glm-5.2",
+  "lastChangelogVersion": "0.82.1",
+  "defaultProvider": "xai",
+  "defaultModel": "grok-4.5",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
+  "treeFilterMode": "no-tools",
   "theme": "catppuccin-macchiato",
   "packages": [
     {
@@ -14,5 +15,6 @@
       "source": "npm:@ff-labs/pi-fff",
       "extensions": []
     }
-  ]
+  ],
+  "showCacheMissNotices": true
 }
