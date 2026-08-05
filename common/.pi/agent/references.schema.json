@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asuender.local/pi/references.schema.json",
+  "title": "Pi project references",
+  "description": "Named local directories available to the agent via system prompt and @ autocomplete.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional JSON Schema URL for editor validation."
+    }
+  },
+  "patternProperties": {
+    "^[^/\\s`,]+$": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Local directory path (absolute, ~/..., or relative to this file)."
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path"],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Local directory path (absolute, ~/..., or relative to this file)."
+            },
+            "description": {
+              "type": "string",
+              "description": "When to use this reference. Described refs are appended to the system prompt."
+            },
+            "hidden": {
+              "type": "boolean",
+              "description": "If true, omit from @ autocomplete. Described hidden refs still appear in the system prompt."
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}
