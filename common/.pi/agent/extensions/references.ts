@@ -16,7 +16,7 @@ import {
 } from "@earendil-works/pi-tui";
 import { homedir } from "node:os";
 import { isAbsolute, join, resolve } from "node:path";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 
 const MAX_SUGGESTIONS = 20;
 const ALIAS_PATTERN = /^[^/\s`,]+$/;
@@ -45,6 +45,14 @@ function shortenPath(path: string): string {
 
 function isAliasValid(alias: string): boolean {
   return alias.length > 0 && ALIAS_PATTERN.test(alias);
+}
+
+function isExistingDirectory(path: string): boolean {
+  try {
+    return existsSync(path) && statSync(path).isDirectory();
+  } catch {
+    return false;
+  }
 }
 
 function parseReferencesFile(raw: string, configDir: string): LoadResult {
@@ -109,6 +117,10 @@ function parseReferencesFile(raw: string, configDir: string): LoadResult {
 
     const expanded = expandHome(pathValue.trim());
     const resolved = isAbsolute(expanded) ? expanded : resolve(configDir, expanded);
+
+    if (!isExistingDirectory(resolved)) {
+      continue;
+    }
 
     entries.push({
       alias,
