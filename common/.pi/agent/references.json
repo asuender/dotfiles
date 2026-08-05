@@ -1,0 +1,11 @@
+{
+  "$schema": "./references.schema.json",
+  "air-web": {
+    "path": "~/mermec/air-web",
+    "description": "Repository for the User Interface which enables interaction with the underlying AIR system."
+  },
+  "impact": {
+    "path": "~/mermec/impact",
+    "description": "Backend of the AIR system hosting the API, database, and so on."
+  }
+}
