@@ -12,7 +12,6 @@ obj.ffmpegPath = "/opt/homebrew/bin/ffmpeg"
 obj.audioDevice = nil
 obj.tmpFile = "/tmp/whisper_recording.wav"
 obj.language = nil
-obj.groqModel = "openai/gpt-oss-120b"
 
 obj._recording = false
 obj._capsDown = false
@@ -51,50 +50,6 @@ local function pasteText(text)
 		else
 			hs.pasteboard.clearContents()
 		end
-	end)
-end
-
-local function refine(text)
-	local apiKey = os.getenv("GROQ_API_KEY")
-	if not apiKey or apiKey == "" then
-		pasteText(text)
-		setMenubar("idle")
-		return
-	end
-
-	local systemPrompt = "You are a voice transcription refiner. The input is raw output from a speech-to-text model. It may contain errors: literal spellings of symbols (\"slash\" instead of \"/\", \"dot\" instead of \".\"), misheard technical terms, missing punctuation, and awkward phrasing.\n\nFirst identify the context (programming, casual chat, email, technical writing, etc.), then correct errors and improve readability while preserving the speaker's intent and meaning. Return ONLY the refined text with no explanations or preamble."
-
-	local body = hs.json.encode({
-		model = obj.groqModel,
-		temperature = 0.3,
-		reasoning_effort = "low",
-		stream = false,
-		messages = {
-			{ role = "system", content = systemPrompt },
-			{ role = "user", content = text },
-		},
-	})
-
-	hs.http.asyncPost("https://api.groq.com/openai/v1/chat/completions", body, {
-		["Content-Type"] = "application/json",
-		["Authorization"] = "Bearer " .. apiKey,
-	}, function(code, responseBody)
-		if code ~= 200 then
-			pasteText(text)
-			setMenubar("idle")
-			return
-		end
-		local decoded = hs.json.decode(responseBody or "")
-		local refined = decoded and decoded.choices
-			and decoded.choices[1]
-			and decoded.choices[1].message
-			and decoded.choices[1].message.content
-		if not refined or refined == "" then
-			pasteText(text)
-		else
-			pasteText(refined:match("^%s*(.-)%s*$"))
-		end
-		setMenubar("idle")
 	end)
 end
 
@@ -171,22 +126,30 @@ local function transcribe()
 
 	local boundary = "WhisperBoundary" .. math.random(100000, 999999)
 	local parts = {
-		"--" .. boundary .. "\r\n"
-			.. 'Content-Disposition: form-data; name="model"\r\n\r\n'
-			.. obj.model .. "\r\n",
-		"--" .. boundary .. "\r\n"
-			.. 'Content-Disposition: form-data; name="response_format"\r\n\r\n'
-			.. "json\r\n",
-		"--" .. boundary .. "\r\n"
+		"--" .. boundary .. "\r\n" .. 'Content-Disposition: form-data; name="model"\r\n\r\n' .. obj.model .. "\r\n",
+		"--" .. boundary .. "\r\n" .. 'Content-Disposition: form-data; name="response_format"\r\n\r\n' .. "json\r\n",
+		"--"
+			.. boundary
+			.. "\r\n"
 			.. 'Content-Disposition: form-data; name="file"; filename="recording.wav"\r\n'
 			.. "Content-Type: audio/wav\r\n\r\n"
-			.. fileData .. "\r\n"
-			.. "--" .. boundary .. "--\r\n",
+			.. fileData
+			.. "\r\n"
+			.. "--"
+			.. boundary
+			.. "--\r\n",
 	}
 	if obj.language then
-		table.insert(parts, 2, "--" .. boundary .. "\r\n"
-			.. 'Content-Disposition: form-data; name="language"\r\n\r\n'
-			.. obj.language .. "\r\n")
+		table.insert(
+			parts,
+			2,
+			"--"
+				.. boundary
+				.. "\r\n"
+				.. 'Content-Disposition: form-data; name="language"\r\n\r\n'
+				.. obj.language
+				.. "\r\n"
+		)
 	end
 
 	hs.http.asyncPost(
@@ -208,7 +171,8 @@ local function transcribe()
 			if text == "" then
 				return fail("no transcription returned")
 			end
-			refine(text)
+			pasteText(text)
+			setMenubar("idle")
 		end
 	)
 end
@@ -235,9 +199,20 @@ local function startRecording()
 		end
 		transcribe()
 	end, {
-		"-nostdin", "-hide_banner", "-loglevel", "error",
-		"-f", "avfoundation", "-i", device,
-		"-ar", "16000", "-ac", "1", "-y", obj.tmpFile,
+		"-nostdin",
+		"-hide_banner",
+		"-loglevel",
+		"error",
+		"-f",
+		"avfoundation",
+		"-i",
+		device,
+		"-ar",
+		"16000",
+		"-ac",
+		"1",
+		"-y",
+		obj.tmpFile,
 	})
 	obj._recordTask:setStreamingCallback(function()
 		return true
