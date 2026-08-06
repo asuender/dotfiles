@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.82.1",
-  "defaultProvider": "xai",
-  "defaultModel": "grok-4.5",
+  "lastChangelogVersion": "0.83.0",
+  "defaultProvider": "cursor",
+  "defaultModel": "composer-2.5:fast",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
   "treeFilterMode": "no-tools",
@@ -14,7 +14,8 @@
     {
       "source": "npm:@ff-labs/pi-fff",
       "extensions": []
-    }
+    },
+    "npm:pi-cursor-sdk"
   ],
   "showCacheMissNotices": true
 }
