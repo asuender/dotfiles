@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cwd=$(tmux display-message -p '#{pane_current_path}')
+
+name=$(printf '%s\n' opencode pi codex cursor | fzf) || exit 0
+[[ -z "$name" ]] && exit 0
+
+case "$name" in
+  opencode) cmd="opencode --port" ;;
+  pi) cmd="pi" ;;
+  codex) cmd="codex" ;;
+  cursor) cmd="cursor" ;;
+  *) exit 0 ;;
+esac
+
+tmux new-window -c "$cwd" -n "$name" "$cmd"
