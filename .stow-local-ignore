@@ -22,3 +22,13 @@ node_modules
 ^/README.*
 ^/LICENSE.*
 ^/COPYING
+
+# Repo management (not dotfiles)
+^/install\.sh
+^/Brewfile
+^/AGENTS\.md
+^/\.zshrc
+^/\.gitignore
+^/\.setup
+^/personal
+^/\.claude
