@@ -7,9 +7,10 @@ window-padding-color = background
 window-padding-balance
 
 theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
-font-family = CaskaydiaCove Nerd Font Mono
+# font-family = CaskaydiaCove Nerd Font Mono
+font-family = IoskeleyMonoTerm Nerd Font Medium
 font-size = 18
-adjust-cell-width = -5%
+adjust-cell-width = -10%
 
 keybind = alt+backspace=text:\x1b\x7f
 shell-integration-features = ssh-env,ssh-terminfo

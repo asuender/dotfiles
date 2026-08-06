@@ -5,7 +5,17 @@ FONTS_DIR="$HOME/.local/share/fonts"
 
 mkdir -p "$CACHE_DIR"
 mkdir -p "$FONTS_DIR/CascadiaCode"
+mkdir -p "$FONTS_DIR/IoskeleyMonoTerm"
 
-curl -L "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaCode.tar.xz" -o "$CACHE_DIR/CascadiaCode.tar.xz" &&
-  tar -xJf "$CACHE_DIR/CascadiaCode.tar.xz" -C "$FONTS_DIR/CascadiaCode" &&
-  fc-cache -fv
+curl -L "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaCode.tar.xz" \
+  -o "$CACHE_DIR/CascadiaCode.tar.xz" &&
+  tar -xJf "$CACHE_DIR/CascadiaCode.tar.xz" -C "$FONTS_DIR/CascadiaCode"
+
+# Terminal variant with Nerd Font icons — matches .config/ghostty/config
+# https://ahatem.github.io/IoskeleyMono/
+curl -L "https://github.com/ahatem/IoskeleyMono/releases/latest/download/IoskeleyMono-Term-NerdFont.zip" \
+  -o "$CACHE_DIR/IoskeleyMono-Term-NerdFont.zip" &&
+  unzip -j -qo "$CACHE_DIR/IoskeleyMono-Term-NerdFont.zip" "Normal/*.ttf" \
+    -d "$FONTS_DIR/IoskeleyMonoTerm"
+
+fc-cache -fv
