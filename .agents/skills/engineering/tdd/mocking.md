@@ -1,5 +1,7 @@
 # When to Mock
 
+Reach for mocks when the real dependency is **slow, flaky, or has side effects you can't control** in a test. Otherwise prefer real implementations — the closer tests are to real usage, the more confidence they give.
+
 Mock at **system boundaries** only:
 
 - External APIs (payment, email, etc.)
@@ -9,9 +11,31 @@ Mock at **system boundaries** only:
 
 Don't mock:
 
-- Your own classes/modules
+- **The unit under test** — if you're testing `UserService`, don't mock `UserService`; mock its dependencies and let the service run for real.
+- Your own classes/modules (when they're fast and reliable)
 - Internal collaborators
-- Anything you control
+- Simple in-memory data structures or pure functions
+
+## HTTP requests
+
+Prefer [Mock Service Worker (MSW)](https://mswjs.io/) over mocking `fetch` directly. See Vitest's [Mocking Requests](https://vitest.dev/guide/mocking/requests) guide for setup.
+
+## Time and randomness
+
+When code depends on the current date, random numbers, or UUIDs, control them in tests:
+
+```typescript
+import { afterEach, beforeEach, vi } from "vitest";
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2024-01-15"));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+```
 
 ## Designing for Mockability
 

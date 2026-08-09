@@ -9,11 +9,15 @@ TDD is the red → green loop. This skill is the reference that makes that loop 
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
+**References:** [Vitest — Testing in Practice](https://vitest.dev/guide/learn/testing-in-practice.html) for test structure, edge cases, and organization. See [tests.md](tests.md) and [mocking.md](mocking.md) for project-specific guidance.
+
 ## What a good test is
 
 Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification — "user can checkout with valid cart" tells you exactly what capability exists — and survives refactors because it doesn't care about internal structure.
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
+Start from the **contract**: what does this unit promise callers? Test inputs, outputs, side effects, and errors — not how it achieves them. If a refactor changes internals but the contract holds, the test should still pass.
+
+See [tests.md](tests.md) for examples, structure, edge cases, and organization. See [mocking.md](mocking.md) for mocking guidelines.
 
 ## Seams — where tests go
 
@@ -32,5 +36,6 @@ Ask: "What's the public interface, and which seams should we test?"
 ## Rules of the loop
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **Bug fixes.** Reproduce the bug with a failing test first, then fix the code and watch it turn green. The test documents what was broken and prevents regression. Don't "fix" a bug by weakening the test.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
