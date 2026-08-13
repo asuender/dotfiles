@@ -21,6 +21,36 @@ return {
         opts = {
             inlay_hints = { enabled = false },
             diagnostics = { virtual_text = false },
+            servers = {
+                vtsls = {
+                    keys = {
+                        {
+                            "K",
+                            function()
+                                require("ts_expand_hover").hover()
+                            end,
+                            desc = "TypeScript expandable hover",
+                        },
+                    },
+                },
+            },
+        },
+    },
+
+    {
+        "folke/noice.nvim",
+        opts = {
+            lsp = {
+                hover = { silent = true },
+            },
+        },
+    },
+
+    {
+        "nemanjamalesija/ts-expand-hover.nvim",
+        ft = { "typescript", "typescriptreact" },
+        opts = {
+            keymaps = { hover = false },
         },
     },
 
@@ -128,6 +158,7 @@ return {
         dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = {
             sections = {
+                lualine_c = { "filename" },
                 lualine_x = { "location" },
                 lualine_y = {},
                 lualine_z = {},
