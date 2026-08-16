@@ -1,0 +1,5 @@
+{
+  "model": "opencode/deepseek-v4-flash",
+  "thinking": "low",
+  "tools": ["read", "grep", "find", "ls", "bash", "edit", "write"]
+}

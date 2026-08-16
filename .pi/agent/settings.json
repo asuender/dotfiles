@@ -1,11 +1,12 @@
 {
-  "lastChangelogVersion": "0.83.0",
-  "defaultProvider": "cursor",
-  "defaultModel": "composer-2.5:fast",
-  "defaultThinkingLevel": "medium",
-  "hideThinkingBlock": true,
+  "lastChangelogVersion": "0.84.2",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultThinkingLevel": "low",
+  "hideThinkingBlock": false,
   "treeFilterMode": "no-tools",
   "theme": "catppuccin-macchiato",
+  "tuiMode": "fullscreen",
   "packages": [
     {
       "source": "npm:pi-web-access",
@@ -14,8 +15,7 @@
     {
       "source": "npm:@ff-labs/pi-fff",
       "extensions": []
-    },
-    "npm:pi-cursor-sdk"
+    }
   ],
   "showCacheMissNotices": true
 }
