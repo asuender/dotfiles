@@ -144,16 +144,6 @@ return {
     },
 
     {
-        "stevearc/conform.nvim",
-        opts = {
-            formatters_by_ft = {
-                typescript = { "prettier" },
-                typescriptreact = { "prettier" },
-            },
-        },
-    },
-
-    {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = {
