@@ -18,3 +18,8 @@ Respond briefly and directly. Focus on the core point without elaboration or fol
 - **Bold:** Use for keywords, core concepts, and actions.
 - `Backticks:` For technical syntax, files, and commands.
 - *Italics:* For conversational emphasis.
+
+## Skills
+
+- Whenever you are asked to show something or do a report, use the `show-me` skill.
+- Whenever you are asked for bigger tasks, try to delegate them to minions (see the `minions` skill).
