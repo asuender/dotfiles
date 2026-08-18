@@ -39,11 +39,52 @@ export function formatDuration(durationMs: number): string {
   return remainder ? `${minutes}m ${remainder}s` : `${minutes}m`;
 }
 
+export function formatMinionTitle(args: { task: string; title?: string }): string {
+  return truncate(oneLine(args.title?.trim() || args.task));
+}
+
 function truncateOutput(output: string): string {
   if (Buffer.byteLength(output, "utf8") <= OUTPUT_LIMIT_BYTES) return output;
   let value = output.slice(0, OUTPUT_LIMIT_BYTES);
   while (Buffer.byteLength(value, "utf8") > OUTPUT_LIMIT_BYTES) value = value.slice(0, -1);
   return `${value}\n\n[Output truncated. Full result remains available in the expanded tool details.]`;
+}
+
+export function formatRunningProgress(details: MinionProgress): string {
+  const toolCalls = details.messages.reduce((count, message) => {
+    if (message.role !== "assistant") return count;
+    return count + message.content.filter((part) => part.type === "toolCall").length;
+  }, 0);
+  const callSummary = toolCalls ? ` · ${toolCalls} tool ${toolCalls === 1 ? "call" : "calls"}` : "";
+  const output = getFinalOutput(details.messages);
+  const responseSummary = output ? ` · "${truncate(oneLine(output), 90)}"` : "";
+  return `running${callSummary}${responseSummary}`;
+}
+
+function summarizeToolArguments(args: unknown): string {
+  if (!args || typeof args !== "object" || Array.isArray(args)) return "";
+  const values = args as Record<string, unknown>;
+  for (const key of ["path", "command", "pattern", "query", "url"]) {
+    if (typeof values[key] === "string") return truncate(oneLine(values[key]), 100);
+  }
+  const firstString = Object.values(values).find((value): value is string => typeof value === "string");
+  return firstString ? truncate(oneLine(firstString), 100) : "";
+}
+
+export function formatExpandedProgress(details: MinionProgress): string {
+  const lines: string[] = [];
+  for (const message of details.messages) {
+    if (message.role !== "assistant") continue;
+    for (const part of message.content) {
+      if (part.type === "text" && part.text.trim()) {
+        lines.push(`"${truncate(oneLine(part.text), 240)}"`);
+      } else if (part.type === "toolCall") {
+        const summary = summarizeToolArguments(part.arguments);
+        lines.push(`↳ ${part.name}${summary ? ` ${summary}` : ""}`);
+      }
+    }
+  }
+  return lines.join("\n");
 }
 
 export default function (pi: ExtensionAPI) {
@@ -55,10 +96,11 @@ export default function (pi: ExtensionAPI) {
     promptSnippet: "Delegate a focused implementation, exploration, or verification task to an isolated minion",
     promptGuidelines: [
       "Use minion when the user asks to use minions or when the loaded minions skill directs delegation.",
-      "Give minion a self-contained brief with the goal, constraints, known context, and expected output.",
+      "Give minion a short descriptive title and a self-contained brief with the goal, constraints, known context, and expected output.",
       "After minion returns, synthesize its result and perform only targeted verification when necessary.",
     ],
     parameters: Type.Object({
+      title: Type.Optional(Type.String({ description: "Short descriptive title shown in the tool call" })),
       task: Type.String({ description: "Clear, self-contained task for the minion" }),
       cwd: Type.Optional(Type.String({ description: "Working directory, relative to the current project or absolute" })),
     }),
@@ -95,7 +137,7 @@ export default function (pi: ExtensionAPI) {
       const title = context.isError
         ? theme.fg("error", theme.bold("✗ minion"))
         : theme.fg("toolTitle", theme.bold("minion"));
-      return new Text(`${title} ${theme.fg("accent", truncate(oneLine(args.task)))}`, TOOL_INDENT, 0);
+      return new Text(`${title} ${theme.fg("accent", formatMinionTitle(args))}`, TOOL_INDENT, 0);
     },
 
     renderResult(result, { expanded, isPartial }, theme) {
@@ -108,11 +150,19 @@ export default function (pi: ExtensionAPI) {
 
       const output = details.finalOutput || getFinalOutput(details.messages);
       const running = isPartial || details.running;
+      if (expanded && running) {
+        const progress = formatExpandedProgress(details);
+        if (progress) return new Text(`\n${theme.fg("toolOutput", progress)}`, TOOL_INDENT, 0);
+      }
       if (expanded && output) {
         return new Text(`\n${theme.fg("toolOutput", output.trim())}`, TOOL_INDENT, 0);
       }
 
-      const status = running ? theme.fg("warning", "running") : theme.fg("success", "completed");
+      const status = details.phase === "retrying"
+        ? theme.fg("warning", "retrying")
+        : running
+          ? theme.fg("warning", formatRunningProgress(details))
+          : theme.fg("success", "completed");
       const input = details.usage.input + details.usage.cacheRead;
       const stats = running
         ? ""

@@ -1,5 +1,5 @@
 import * as fs from "node:fs";
-import type { Message, Usage } from "@earendil-works/pi-ai";
+import { isRetryableAssistantError, type AssistantMessage, type Message, type Usage } from "@earendil-works/pi-ai";
 import {
   createAgentSession,
   DefaultResourceLoader,
@@ -9,7 +9,7 @@ import {
 } from "@earendil-works/pi-coding-agent";
 
 export const DEFAULT_CONFIG = {
-  model: "opencode/deepseek-v4-flash",
+  model: "openrouter/deepseek/deepseek-v4-flash-0731",
   thinking: "low",
   tools: ["read", "grep", "find", "ls", "bash", "edit", "write"],
 } as const;
@@ -25,6 +25,7 @@ export type MinionProgress = {
   finalOutput: string;
   usage: Usage;
   durationMs: number;
+  phase: "running" | "retrying";
 };
 
 const THINKING_LEVELS = new Set<MinionConfig["thinking"]>([
@@ -36,6 +37,10 @@ const THINKING_LEVELS = new Set<MinionConfig["thinking"]>([
   "xhigh",
   "max",
 ]);
+
+const MAX_RETRIES = 3;
+const BASE_RETRY_DELAY_MS = 2_000;
+const MAX_RETRY_DELAY_MS = 30_000;
 
 const EMPTY_USAGE: Usage = {
   input: 0,
@@ -99,6 +104,27 @@ export function getFinalOutput(messages: Message[]): string {
   return "";
 }
 
+export function getRetryDelay(attempt: number, random = Math.random): number {
+  const ceiling = Math.min(MAX_RETRY_DELAY_MS, BASE_RETRY_DELAY_MS * 2 ** attempt);
+  return Math.round(random() * ceiling);
+}
+
+function waitForRetry(delayMs: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    signal?.throwIfAborted();
+
+    const onAbort = () => {
+      clearTimeout(timeout);
+      reject(signal?.reason ?? new DOMException("Minion retry aborted", "AbortError"));
+    };
+    const timeout = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, delayMs);
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
 function addUsage(total: Usage, usage: Usage): void {
   total.input += usage.input ?? 0;
   total.output += usage.output ?? 0;
@@ -148,6 +174,8 @@ export async function runMinion(options: {
   const usage: Usage = structuredClone(EMPTY_USAGE);
   let stopReason: string | undefined;
   let errorMessage: string | undefined;
+  let lastAssistant: AssistantMessage | undefined;
+  let phase: MinionProgress["phase"] = "running";
 
   const emit = () =>
     options.onProgress?.({
@@ -155,6 +183,7 @@ export async function runMinion(options: {
       finalOutput: getFinalOutput(messages),
       usage,
       durationMs: Date.now() - startedAt,
+      phase,
     });
 
   const unsubscribe = session.subscribe((event) => {
@@ -162,6 +191,7 @@ export async function runMinion(options: {
     const message = event.message as Message;
     messages.push(message);
     if (message.role === "assistant") {
+      lastAssistant = message;
       if (message.usage) addUsage(usage, message.usage);
       stopReason = message.stopReason;
       errorMessage = message.errorMessage;
@@ -174,15 +204,32 @@ export async function runMinion(options: {
   else options.signal?.addEventListener("abort", abort, { once: true });
 
   try {
-    options.signal?.throwIfAborted();
-    await session.prompt(`Task: ${options.task}`);
+    for (let attempt = 0; ; attempt++) {
+      options.signal?.throwIfAborted();
+      stopReason = undefined;
+      errorMessage = undefined;
+      lastAssistant = undefined;
 
-    if (stopReason === "error" || stopReason === "aborted") {
-      throw new Error(errorMessage || `Minion stopped: ${stopReason}`);
+      await session.prompt(`Task: ${options.task}`);
+
+      if (stopReason !== "error") break;
+      if (attempt >= MAX_RETRIES || !lastAssistant || !isRetryableAssistantError(lastAssistant)) {
+        throw new Error(errorMessage || "Minion failed");
+      }
+
+      phase = "retrying";
+      emit();
+      await waitForRetry(getRetryDelay(attempt), options.signal);
+      phase = "running";
+      emit();
+    }
+
+    if (stopReason === "aborted") {
+      throw new Error(errorMessage || "Minion stopped: aborted");
     }
     const finalOutput = getFinalOutput(messages);
     if (!finalOutput) throw new Error("Minion produced no final output");
-    return { messages, finalOutput, usage, durationMs: Date.now() - startedAt };
+    return { messages, finalOutput, usage, durationMs: Date.now() - startedAt, phase };
   } finally {
     options.signal?.removeEventListener("abort", abort);
     unsubscribe();
