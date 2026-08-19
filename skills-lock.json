@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "bro": {
+      "source": "dmmulroy/.dotfiles",
+      "sourceType": "github",
+      "skillPath": "home/.agents/skills/bro/SKILL.md",
+      "computedHash": "a81ff93ccf559cd3939a7191f9ccb1da3e10abf98cb949a68eb277c44e7497b8"
+    },
     "domain-modeling": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -24,6 +30,24 @@
       "sourceType": "github",
       "skillPath": "skills/productivity/grilling/SKILL.md",
       "computedHash": "a16b2f661db6caf310d7e02dd0d069e597cb888873e210e66f641eae715c5f23"
+    },
+    "handoff": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/handoff/SKILL.md",
+      "computedHash": "ad03e8d4ea3cbbff66420eb7ba3cc375b5cbe1821a2449b53e863256cf5b5cde"
+    },
+    "show-me": {
+      "source": "dmmulroy/.dotfiles",
+      "sourceType": "github",
+      "skillPath": "home/.agents/skills/show-me/SKILL.md",
+      "computedHash": "c39967d99544195774ac8de9431438e7c219ff2383e25fb4e224654bdfb9ad23"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/tdd/SKILL.md",
+      "computedHash": "43504b4e82b610250c2d12048838e56d6814d875f9b686f87854b31540e39495"
     }
   }
 }
