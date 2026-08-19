@@ -22,4 +22,3 @@ Respond briefly and directly. Focus on the core point without elaboration or fol
 ## Skills
 
 - Whenever you are asked to show something or do a report, use the `show-me` skill.
-- Whenever you are asked for bigger tasks, try to delegate them to minions (see the `minions` skill).
