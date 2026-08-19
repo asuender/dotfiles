@@ -18,6 +18,24 @@
       "skillFolderHash": "eb6a23305aea6e340d14b9de3766e721f9f4861b",
       "installedAt": "2026-07-01T21:05:21.339Z",
       "updatedAt": "2026-07-01T21:05:21.339Z"
+    },
+    "migrate-oxlint": {
+      "source": "oxc-project/oxc",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/oxc-project/oxc.git",
+      "skillPath": ".agents/skills/migrate-oxlint/SKILL.md",
+      "skillFolderHash": "a21257269149e85f2613d93f20258dc5cc921cda",
+      "installedAt": "2026-08-14T18:29:38.684Z",
+      "updatedAt": "2026-08-14T18:29:38.684Z"
+    },
+    "migrate-oxfmt": {
+      "source": "oxc-project/oxc",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/oxc-project/oxc.git",
+      "skillPath": ".agents/skills/migrate-oxfmt/SKILL.md",
+      "skillFolderHash": "555c27dbc9fdb700f05394f722a59dc96e58d760",
+      "installedAt": "2026-08-14T18:55:28.645Z",
+      "updatedAt": "2026-08-14T18:55:28.645Z"
     }
   },
   "dismissed": {
