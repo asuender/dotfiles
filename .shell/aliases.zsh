@@ -53,3 +53,5 @@ alias zs="source $HOME/.zshrc"
 # Tmux
 alias t="tmux new-session -A -s default"
 alias ta="tmux a"
+
+alias skills="npx skills"
