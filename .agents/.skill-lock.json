@@ -76,6 +76,15 @@
       "skillFolderHash": "0bdb821a21e793a4f6f82a7078c052154447e5cc",
       "installedAt": "2026-08-19T06:29:28.691Z",
       "updatedAt": "2026-08-19T06:29:28.691Z"
+    },
+    "react-doctor": {
+      "source": "millionco/react-doctor",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/millionco/react-doctor.git",
+      "skillPath": "skills/react-doctor/SKILL.md",
+      "skillFolderHash": "549e7d8728550f1f3fc72572b8601c3b11e801ac",
+      "installedAt": "2026-08-19T06:39:18.134Z",
+      "updatedAt": "2026-08-19T06:39:18.134Z"
     }
   },
   "dismissed": {
