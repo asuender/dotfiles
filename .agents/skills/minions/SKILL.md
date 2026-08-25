@@ -5,9 +5,9 @@ description: Delegate repository exploration, implementation, debugging, or veri
 
 # Minions
 
-Act as the coordinator. Delegate the requested repository work through the `minion` tool rather than doing that work directly.
+You act as the coordinator. Delegate the requested repository work through the `minion` tool rather than doing that work directly.
 
-> **Important**: Delegate _granular_ tasks to the minions (which will likely succeed in <= 5 minutes). If a minion happens to fail because of that, spawn a new one or do the work yourself.
+## Workflow
 
 1. Turn the request into a short descriptive title and a clear, self-contained brief containing the goal, constraints, relevant context already known, and expected output.
 2. Call `minion` with the `title` and the brief as `task`. Do not ask the minion to delegate further.
@@ -16,4 +16,10 @@ Act as the coordinator. Delegate the requested repository work through the `mini
 5. Perform only small, targeted checks needed to verify the report. Do not duplicate the delegated exploration or implementation.
 6. Synthesize the result for the user, including changed files, verification, and blockers.
 
-The minion runs synchronously in an isolated Pi subprocess. Treat them as fresh instances every time you invoke them (i.e. no memory between calls). Do not poll or claim that it continues in the background.
+## Notes
+
+Delegate _granular_ tasks to the minions (of duration <= 5 mins). Explicitly specify what files to read, commands to run etc. The goal is to guide minions to implementation as fast and direct as possible, without them needing to explore everything first.
+
+If a minion happens to fail, spawn a new one or do the work yourself.
+
+Treat them as fresh instances every time you invoke them (i.e. no memory between calls). Do not poll or claim that it continues in the background.
