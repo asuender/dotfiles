@@ -40,11 +40,32 @@ alias c='chezmoi'
 alias d='docker'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
+# Docker shortcuts
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias dpa='docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias di='docker images'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f'
+
 # Git shortcuts
 alias g='git'
+alias gs='git status --short --branch'
+alias ga='git add'
+alias gaa='git add --all'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gl='git log --oneline --decorate --graph'
+alias gb='git branch'
+alias gco='git checkout'
+alias gsw='git switch'
 alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
+alias gp='git push'
+alias gpl='git pull'
+alias gf='git fetch --all --prune'
 
 # Zsh config
 alias zc="$EDITOR $HOME/.zshrc"
