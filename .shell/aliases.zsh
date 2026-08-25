@@ -51,21 +51,9 @@ alias dcl='docker compose logs -f'
 
 # Git shortcuts
 alias g='git'
-alias gs='git status --short --branch'
-alias ga='git add'
-alias gaa='git add --all'
-alias gd='git diff'
-alias gds='git diff --staged'
-alias gl='git log --oneline --decorate --graph'
-alias gb='git branch'
-alias gco='git checkout'
-alias gsw='git switch'
 alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
-alias gp='git push'
-alias gpl='git pull'
-alias gf='git fetch --all --prune'
 
 # Zsh config
 alias zc="$EDITOR $HOME/.zshrc"
