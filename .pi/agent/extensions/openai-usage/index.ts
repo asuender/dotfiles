@@ -21,7 +21,6 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
   let generation = 0;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let request: AbortController | undefined;
-  let lastSnapshot: UsageSnapshot | undefined;
 
   function isSubscriptionModel(
     ctx: ExtensionContext,
@@ -48,7 +47,6 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
   function renderSnapshot(
     ctx: ExtensionContext,
     snapshot: UsageSnapshot,
-    stale = false,
   ): void {
     const prefix = ctx.ui.theme.fg("dim", "OpenAI ");
     const windows = snapshot.windows
@@ -56,8 +54,7 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
         ctx.ui.theme.fg(windowColor(ctx, window), formatUsageWindow(window)),
       )
       .join(ctx.ui.theme.fg("dim", " · "));
-    const suffix = stale ? ctx.ui.theme.fg("dim", " stale") : "";
-    ctx.ui.setStatus(STATUS_KEY, `${prefix}${windows}${suffix}`);
+    ctx.ui.setStatus(STATUS_KEY, `${prefix}${windows}`);
   }
 
   function stop(ctx: ExtensionContext): void {
@@ -70,7 +67,6 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     }
     request?.abort();
     request = undefined;
-    lastSnapshot = undefined;
     ctx.ui.setStatus(STATUS_KEY, undefined);
   }
 
@@ -107,7 +103,6 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
         });
         if (!active || run !== generation) return;
 
-        lastSnapshot = snapshot;
         renderSnapshot(ctx, snapshot);
       } finally {
         clearTimeout(timeout);
@@ -116,14 +111,10 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     } catch {
       if (!active || run !== generation) return;
 
-      if (lastSnapshot) {
-        renderSnapshot(ctx, lastSnapshot, true);
-      } else {
-        ctx.ui.setStatus(
-          STATUS_KEY,
-          ctx.ui.theme.fg("warning", "OpenAI usage unavailable"),
-        );
-      }
+      ctx.ui.setStatus(
+        STATUS_KEY,
+        ctx.ui.theme.fg("warning", "OpenAI usage unavailable"),
+      );
     } finally {
       schedule(ctx, run);
     }
