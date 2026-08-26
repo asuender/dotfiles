@@ -13,13 +13,11 @@ import {
 
 const PROVIDER_ID = "openai-codex";
 const STATUS_KEY = "openai-usage";
-const POLL_INTERVAL_MS = 60_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 
 export default function openAIUsageExtension(pi: ExtensionAPI): void {
   let active = false;
   let generation = 0;
-  let timer: ReturnType<typeof setTimeout> | undefined;
   let request: AbortController | undefined;
 
   function isSubscriptionModel(
@@ -61,27 +59,13 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     active = false;
     generation++;
 
-    if (timer) {
-      clearTimeout(timer);
-      timer = undefined;
-    }
     request?.abort();
     request = undefined;
     ctx.ui.setStatus(STATUS_KEY, undefined);
   }
 
-  function schedule(ctx: ExtensionContext, run: number): void {
+  async function updateUsage(ctx: ExtensionContext, run: number): Promise<void> {
     if (!active || run !== generation) return;
-
-    timer = setTimeout(() => {
-      timer = undefined;
-      void poll(ctx, run);
-    }, POLL_INTERVAL_MS);
-    timer.unref?.();
-  }
-
-  async function poll(ctx: ExtensionContext, run: number): Promise<void> {
-    if (!active || run !== generation || request) return;
 
     try {
       const auth = await ctx.modelRegistry.getProviderAuth(PROVIDER_ID);
@@ -115,38 +99,43 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
         STATUS_KEY,
         ctx.ui.theme.fg("warning", "OpenAI usage unavailable"),
       );
-    } finally {
-      schedule(ctx, run);
     }
   }
 
-  function start(ctx: ExtensionContext): void {
-    active = true;
+  function refresh(ctx: ExtensionContext, showLoading = false): void {
+    if (!active) return;
+
     const run = ++generation;
-    ctx.ui.setStatus(
-      STATUS_KEY,
-      ctx.ui.theme.fg("dim", "OpenAI usage loading"),
-    );
-    void poll(ctx, run);
+    request?.abort();
+    request = undefined;
+    if (showLoading) {
+      ctx.ui.setStatus(
+        STATUS_KEY,
+        ctx.ui.theme.fg("dim", "OpenAI usage loading"),
+      );
+    }
+    void updateUsage(ctx, run);
   }
 
-  function reconcile(
+  function selectModel(
     ctx: ExtensionContext,
     model: Model<any> | undefined,
   ): void {
-    const shouldBeActive = isSubscriptionModel(ctx, model);
-    if (active === shouldBeActive) return;
+    if (!isSubscriptionModel(ctx, model)) {
+      stop(ctx);
+      return;
+    }
 
-    if (active) stop(ctx);
-    if (shouldBeActive) start(ctx);
+    active = true;
+    refresh(ctx, true);
   }
 
-  pi.on("session_start", async (_event, ctx) => {
-    reconcile(ctx, ctx.model);
+  pi.on("model_select", async (event, ctx) => {
+    selectModel(ctx, event.model);
   });
 
-  pi.on("model_select", async (event, ctx) => {
-    reconcile(ctx, event.model);
+  pi.on("agent_end", async (_event, ctx) => {
+    refresh(ctx);
   });
 
   pi.on("session_shutdown", async (_event, ctx) => {
