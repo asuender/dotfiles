@@ -46,7 +46,7 @@ describe("parseUsagePayload", () => {
       })),
       [
         { label: "5h", remainingPercent: 82.5 },
-        { label: "1w", remainingPercent: 60 },
+        { label: "7d", remainingPercent: 60 },
       ],
     );
     assert.equal(snapshot.windows[0]?.resetsAt, 1_800_000_000_000);
@@ -74,7 +74,7 @@ describe("parseUsagePayload", () => {
     });
 
     assert.equal(formatUsageWindow(snapshot.windows[0]!), "5h 100%");
-    assert.equal(formatUsageWindow(snapshot.windows[1]!), "Spark 1w 0%");
+    assert.equal(formatUsageWindow(snapshot.windows[1]!), "Spark 7d 0%");
   });
 
   test("rejects responses without usable windows", () => {
@@ -90,7 +90,7 @@ describe("formatDuration", () => {
     assert.equal(formatDuration(300), "5m");
     assert.equal(formatDuration(18_000), "5h");
     assert.equal(formatDuration(86_400), "1d");
-    assert.equal(formatDuration(604_800), "1w");
+    assert.equal(formatDuration(604_800), "7d");
   });
 });
 

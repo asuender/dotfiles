@@ -115,7 +115,6 @@ export function parseUsagePayload(payload: unknown): UsageSnapshot {
 }
 
 export function formatDuration(seconds: number): string {
-  if (seconds % 604_800 === 0) return `${seconds / 604_800}w`;
   if (seconds % 86_400 === 0) return `${seconds / 86_400}d`;
   if (seconds % 3_600 === 0) return `${seconds / 3_600}h`;
   if (seconds % 60 === 0) return `${seconds / 60}m`;
