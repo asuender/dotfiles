@@ -56,16 +56,18 @@ describe("parseUsagePayload", () => {
     const snapshot = parseUsagePayload({
       rate_limit: {
         primary_window: {
-          used_percent: -5,
+          used_percent: 0,
           limit_window_seconds: 18_000,
         },
+        secondary_window: null,
       },
       additional_rate_limits: [
         {
           limit_name: "GPT-5.3-Codex-Spark",
           rate_limit: {
+            primary_window: null,
             secondary_window: {
-              used_percent: 110,
+              used_percent: 100,
               limit_window_seconds: 604_800,
             },
           },
@@ -79,8 +81,30 @@ describe("parseUsagePayload", () => {
 
   test("rejects responses without usable windows", () => {
     assert.throws(
-      () => parseUsagePayload({ rate_limit: { primary_window: null } }),
+      () =>
+        parseUsagePayload({
+          rate_limit: {
+            primary_window: null,
+            secondary_window: null,
+          },
+        }),
       /no rate-limit windows/,
+    );
+  });
+
+  test("rejects responses that do not match the API schema", () => {
+    assert.throws(
+      () =>
+        parseUsagePayload({
+          rate_limit: {
+            primary_window: {
+              used_percent: 101,
+              limit_window_seconds: 18_000,
+            },
+            secondary_window: null,
+          },
+        }),
+      (error: unknown) => error instanceof Error && error.name === "ZodError",
     );
   });
 });
@@ -116,6 +140,7 @@ describe("OpenAI authentication", () => {
                 used_percent: 25,
                 limit_window_seconds: 18_000,
               },
+              secondary_window: null,
             },
           }),
           {

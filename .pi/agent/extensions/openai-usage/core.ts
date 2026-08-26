@@ -1,6 +1,41 @@
+import { z } from "zod";
+
 const OPENAI_AUTH_CLAIM = "https://api.openai.com/auth";
 
-type JsonObject = Record<string, unknown>;
+const UsageWindowResponseSchema = z.object({
+  used_percent: z.number().min(0).max(100),
+  limit_window_seconds: z.number().int().positive(),
+  reset_at: z.number().int().positive().optional(),
+});
+
+const RateLimitResponseSchema = z.object({
+  primary_window: UsageWindowResponseSchema.nullable(),
+  secondary_window: UsageWindowResponseSchema.nullable(),
+});
+
+const UsageResponseSchema = z.object({
+  plan_type: z.string().optional(),
+  rate_limit: RateLimitResponseSchema,
+  additional_rate_limits: z
+    .array(
+      z.object({
+        limit_name: z.string().min(1),
+        metered_feature: z.string().optional(),
+        rate_limit: RateLimitResponseSchema,
+      }),
+    )
+    .optional()
+    .default([]),
+});
+
+const AccountPayloadSchema = z.object({
+  [OPENAI_AUTH_CLAIM]: z.object({
+    chatgpt_account_id: z.string().min(1),
+  }),
+});
+
+type UsageWindowResponse = z.infer<typeof UsageWindowResponseSchema>;
+type RateLimitResponse = z.infer<typeof RateLimitResponseSchema>;
 
 export interface UsageWindow {
   id: string;
@@ -20,96 +55,73 @@ export interface FetchUsageOptions {
   fetch?: typeof globalThis.fetch;
 }
 
-function asObject(value: unknown): JsonObject | undefined {
-  return value !== null && typeof value === "object" && !Array.isArray(value)
-    ? (value as JsonObject)
-    : undefined;
-}
-
-function finiteNumber(value: unknown): number | undefined {
-  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
-}
-
-function clamp(value: number, minimum: number, maximum: number): number {
-  return Math.min(maximum, Math.max(minimum, value));
-}
-
-function shortLimitName(value: unknown): string | undefined {
-  if (typeof value !== "string" || !value.trim()) return undefined;
-
+function shortLimitName(value: string): string {
   const name = value.trim();
   const codexSuffix = name.match(/codex[-_\s]+(.+)$/i)?.[1];
   return (codexSuffix ?? name).replace(/[-_]+/g, " ");
 }
 
-function parseWindow(
-  value: unknown,
+function normalizeWindow(
+  window: UsageWindowResponse,
   id: string,
   limitName?: string,
-): UsageWindow | undefined {
-  const object = asObject(value);
-  if (!object) return undefined;
-
-  const usedPercent = finiteNumber(object.used_percent);
-  const durationSeconds = finiteNumber(object.limit_window_seconds);
-  if (usedPercent === undefined || durationSeconds === undefined || durationSeconds <= 0) {
-    return undefined;
-  }
-
-  const resetSeconds = finiteNumber(object.reset_at);
-  const durationLabel = formatDuration(durationSeconds);
+): UsageWindow {
+  const durationLabel = formatDuration(window.limit_window_seconds);
 
   return {
     id,
     label: limitName ? `${limitName} ${durationLabel}` : durationLabel,
-    remainingPercent: clamp(100 - usedPercent, 0, 100),
-    durationSeconds,
-    ...(resetSeconds !== undefined && resetSeconds > 0
-      ? { resetsAt: resetSeconds * 1000 }
+    remainingPercent: 100 - window.used_percent,
+    durationSeconds: window.limit_window_seconds,
+    ...(window.reset_at !== undefined
+      ? { resetsAt: window.reset_at * 1000 }
       : {}),
   };
 }
 
-function parseRateLimit(
-  value: unknown,
+function normalizeRateLimit(
+  rateLimit: RateLimitResponse,
   idPrefix: string,
   limitName?: string,
 ): UsageWindow[] {
-  const rateLimit = asObject(value);
-  if (!rateLimit) return [];
-
   return [
-    parseWindow(rateLimit.primary_window, `${idPrefix}:primary`, limitName),
-    parseWindow(rateLimit.secondary_window, `${idPrefix}:secondary`, limitName),
+    rateLimit.primary_window
+      ? normalizeWindow(
+          rateLimit.primary_window,
+          `${idPrefix}:primary`,
+          limitName,
+        )
+      : undefined,
+    rateLimit.secondary_window
+      ? normalizeWindow(
+          rateLimit.secondary_window,
+          `${idPrefix}:secondary`,
+          limitName,
+        )
+      : undefined,
   ].filter((window): window is UsageWindow => window !== undefined);
 }
 
 export function parseUsagePayload(payload: unknown): UsageSnapshot {
-  const object = asObject(payload);
-  if (!object) throw new Error("OpenAI usage response must be an object");
+  const usage = UsageResponseSchema.parse(payload);
+  const windows = normalizeRateLimit(usage.rate_limit, "default");
 
-  const windows = parseRateLimit(object.rate_limit, "default");
-  if (Array.isArray(object.additional_rate_limits)) {
-    object.additional_rate_limits.forEach((entry, index) => {
-      const additional = asObject(entry);
-      if (!additional) return;
-
-      windows.push(
-        ...parseRateLimit(
-          additional.rate_limit,
-          `additional:${index}`,
-          shortLimitName(additional.limit_name),
-        ),
-      );
-    });
-  }
+  usage.additional_rate_limits.forEach((additional, index) => {
+    windows.push(
+      ...normalizeRateLimit(
+        additional.rate_limit,
+        `additional:${index}`,
+        shortLimitName(additional.limit_name),
+      ),
+    );
+  });
 
   if (windows.length === 0) {
     throw new Error("OpenAI usage response contained no rate-limit windows");
   }
 
   return {
-    ...(typeof object.plan_type === "string" ? { planType: object.plan_type } : {}),
+    ...(usage.plan_type ? { planType: usage.plan_type } : {}),
     windows,
   };
 }
@@ -131,12 +143,12 @@ export function extractAccountId(accessToken: string): string | undefined {
     const payloadPart = accessToken.split(".")[1];
     if (!payloadPart) return undefined;
 
-    const payload = asObject(
+    const payload = AccountPayloadSchema.safeParse(
       JSON.parse(Buffer.from(payloadPart, "base64url").toString("utf8")),
     );
-    const auth = asObject(payload?.[OPENAI_AUTH_CLAIM]);
-    const accountId = auth?.chatgpt_account_id;
-    return typeof accountId === "string" && accountId ? accountId : undefined;
+    return payload.success
+      ? payload.data[OPENAI_AUTH_CLAIM].chatgpt_account_id
+      : undefined;
   } catch {
     return undefined;
   }
