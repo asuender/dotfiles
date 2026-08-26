@@ -130,6 +130,10 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     refresh(ctx, true);
   }
 
+  pi.on("session_start", async (_event, ctx) => {
+    selectModel(ctx, ctx.model);
+  });
+
   pi.on("model_select", async (event, ctx) => {
     selectModel(ctx, event.model);
   });
