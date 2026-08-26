@@ -13,19 +13,16 @@ const RateLimitResponseSchema = z.object({
   secondary_window: UsageWindowResponseSchema.nullable(),
 });
 
+const AdditionalRateLimitSchema = z.object({
+  limit_name: z.string().min(1),
+  metered_feature: z.string().optional(),
+  rate_limit: RateLimitResponseSchema,
+});
+
 const UsageResponseSchema = z.object({
   plan_type: z.string().optional(),
   rate_limit: RateLimitResponseSchema,
-  additional_rate_limits: z
-    .array(
-      z.object({
-        limit_name: z.string().min(1),
-        metered_feature: z.string().optional(),
-        rate_limit: RateLimitResponseSchema,
-      }),
-    )
-    .optional()
-    .default([]),
+  additional_rate_limits: z.array(AdditionalRateLimitSchema).nullish().default([]),
 });
 
 const AccountPayloadSchema = z.object({
@@ -61,11 +58,7 @@ function shortLimitName(value: string): string {
   return (codexSuffix ?? name).replace(/[-_]+/g, " ");
 }
 
-function normalizeWindow(
-  window: UsageWindowResponse,
-  id: string,
-  limitName?: string,
-): UsageWindow {
+function normalizeWindow(window: UsageWindowResponse, id: string, limitName?: string): UsageWindow {
   const durationLabel = formatDuration(window.limit_window_seconds);
 
   return {
@@ -73,9 +66,7 @@ function normalizeWindow(
     label: limitName ? `${limitName} ${durationLabel}` : durationLabel,
     remainingPercent: 100 - window.used_percent,
     durationSeconds: window.limit_window_seconds,
-    ...(window.reset_at !== undefined
-      ? { resetsAt: window.reset_at * 1000 }
-      : {}),
+    ...(window.reset_at !== undefined ? { resetsAt: window.reset_at * 1000 } : {}),
   };
 }
 
@@ -86,18 +77,10 @@ function normalizeRateLimit(
 ): UsageWindow[] {
   return [
     rateLimit.primary_window
-      ? normalizeWindow(
-          rateLimit.primary_window,
-          `${idPrefix}:primary`,
-          limitName,
-        )
+      ? normalizeWindow(rateLimit.primary_window, `${idPrefix}:primary`, limitName)
       : undefined,
     rateLimit.secondary_window
-      ? normalizeWindow(
-          rateLimit.secondary_window,
-          `${idPrefix}:secondary`,
-          limitName,
-        )
+      ? normalizeWindow(rateLimit.secondary_window, `${idPrefix}:secondary`, limitName)
       : undefined,
   ].filter((window): window is UsageWindow => window !== undefined);
 }
@@ -106,7 +89,7 @@ export function parseUsagePayload(payload: unknown): UsageSnapshot {
   const usage = UsageResponseSchema.parse(payload);
   const windows = normalizeRateLimit(usage.rate_limit, "default");
 
-  usage.additional_rate_limits.forEach((additional, index) => {
+  usage.additional_rate_limits?.forEach((additional, index) => {
     windows.push(
       ...normalizeRateLimit(
         additional.rate_limit,
@@ -146,9 +129,7 @@ export function extractAccountId(accessToken: string): string | undefined {
     const payload = AccountPayloadSchema.safeParse(
       JSON.parse(Buffer.from(payloadPart, "base64url").toString("utf8")),
     );
-    return payload.success
-      ? payload.data[OPENAI_AUTH_CLAIM].chatgpt_account_id
-      : undefined;
+    return payload.success ? payload.data[OPENAI_AUTH_CLAIM].chatgpt_account_id : undefined;
   } catch {
     return undefined;
   }
@@ -167,10 +148,10 @@ export async function fetchUsage(
   const accountId = extractAccountId(accessToken);
   if (accountId) headers["ChatGPT-Account-Id"] = accountId;
 
-  const response = await fetchImplementation(
-    "https://chatgpt.com/backend-api/wham/usage",
-    { headers, signal: options.signal },
-  );
+  const response = await fetchImplementation("https://chatgpt.com/backend-api/wham/usage", {
+    headers,
+    signal: options.signal,
+  });
   if (!response.ok) {
     throw new Error(`OpenAI usage request failed with HTTP ${response.status}`);
   }

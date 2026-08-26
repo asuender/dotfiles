@@ -1,15 +1,7 @@
 import type { Model } from "@earendil-works/pi-ai";
-import type {
-  ExtensionAPI,
-  ExtensionContext,
-} from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
-import {
-  fetchUsage,
-  formatUsageWindow,
-  type UsageSnapshot,
-  type UsageWindow,
-} from "./core.ts";
+import { fetchUsage, formatUsageWindow, type UsageSnapshot, type UsageWindow } from "./core.ts";
 
 const PROVIDER_ID = "openai-codex";
 const STATUS_KEY = "openai-usage";
@@ -20,37 +12,23 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
   let generation = 0;
   let request: AbortController | undefined;
 
-  function isSubscriptionModel(
-    ctx: ExtensionContext,
-    model: Model<any> | undefined,
-  ): boolean {
+  function isSubscriptionModel(ctx: ExtensionContext, model: Model<any> | undefined): boolean {
     if (!model || model.provider !== PROVIDER_ID) return false;
 
     const provider = ctx.modelRegistry.getProvider(PROVIDER_ID);
-    return (
-      ctx.modelRegistry.isUsingOAuth(model) &&
-      provider?.auth.oauth?.isSubscription === true
-    );
+    return ctx.modelRegistry.isUsingOAuth(model) && provider?.auth.oauth?.isSubscription === true;
   }
 
-  function windowColor(
-    ctx: ExtensionContext,
-    window: UsageWindow,
-  ): "error" | "warning" | "muted" {
+  function windowColor(ctx: ExtensionContext, window: UsageWindow): "error" | "warning" | "muted" {
     if (window.remainingPercent <= 10) return "error";
     if (window.remainingPercent <= 25) return "warning";
     return "muted";
   }
 
-  function renderSnapshot(
-    ctx: ExtensionContext,
-    snapshot: UsageSnapshot,
-  ): void {
+  function renderSnapshot(ctx: ExtensionContext, snapshot: UsageSnapshot): void {
     const prefix = ctx.ui.theme.fg("dim", "OpenAI ");
     const windows = snapshot.windows
-      .map((window) =>
-        ctx.ui.theme.fg(windowColor(ctx, window), formatUsageWindow(window)),
-      )
+      .map((window) => ctx.ui.theme.fg(windowColor(ctx, window), formatUsageWindow(window)))
       .join(ctx.ui.theme.fg("dim", " · "));
     ctx.ui.setStatus(STATUS_KEY, `${prefix}${windows}`);
   }
@@ -95,10 +73,7 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     } catch {
       if (!active || run !== generation) return;
 
-      ctx.ui.setStatus(
-        STATUS_KEY,
-        ctx.ui.theme.fg("warning", "OpenAI usage unavailable"),
-      );
+      ctx.ui.setStatus(STATUS_KEY, ctx.ui.theme.fg("warning", "OpenAI usage unavailable"));
     }
   }
 
@@ -109,18 +84,12 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
     request?.abort();
     request = undefined;
     if (showLoading) {
-      ctx.ui.setStatus(
-        STATUS_KEY,
-        ctx.ui.theme.fg("dim", "OpenAI usage loading"),
-      );
+      ctx.ui.setStatus(STATUS_KEY, ctx.ui.theme.fg("dim", "OpenAI usage loading"));
     }
     void updateUsage(ctx, run);
   }
 
-  function selectModel(
-    ctx: ExtensionContext,
-    model: Model<any> | undefined,
-  ): void {
+  function selectModel(ctx: ExtensionContext, model: Model<any> | undefined): void {
     if (!isSubscriptionModel(ctx, model)) {
       stop(ctx);
       return;

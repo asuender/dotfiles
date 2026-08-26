@@ -151,10 +151,7 @@ describe("OpenAI authentication", () => {
       },
     });
 
-    assert.equal(
-      requestedUrl,
-      "https://chatgpt.com/backend-api/wham/usage",
-    );
+    assert.equal(requestedUrl, "https://chatgpt.com/backend-api/wham/usage");
     assert.equal(requestedHeaders?.get("Authorization"), `Bearer ${token}`);
     assert.equal(requestedHeaders?.get("ChatGPT-Account-Id"), "account-456");
     assert.equal(snapshot.windows[0]?.remainingPercent, 75);
