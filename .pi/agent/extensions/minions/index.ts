@@ -158,11 +158,9 @@ export default function (pi: ExtensionAPI) {
         return new Text(`\n${theme.fg("toolOutput", output.trim())}`, TOOL_INDENT, 0);
       }
 
-      const status = details.phase === "retrying"
-        ? theme.fg("warning", "retrying")
-        : running
-          ? theme.fg("warning", formatRunningProgress(details))
-          : theme.fg("success", "completed");
+      const status = running
+        ? theme.fg("warning", formatRunningProgress(details))
+        : theme.fg("success", "completed");
       const input = details.usage.input + details.usage.cacheRead;
       const stats = running
         ? ""
