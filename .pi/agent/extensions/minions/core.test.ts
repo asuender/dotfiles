@@ -2,7 +2,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
-import { DEFAULT_CONFIG, getFinalOutput, getRetryDelay, loadConfig, MINION_SYSTEM_PROMPT, parseConfig } from "./core.ts";
+import { DEFAULT_CONFIG, getFinalOutput, loadConfig, MINION_SYSTEM_PROMPT, parseConfig } from "./core.ts";
 import { formatDuration, formatExpandedProgress, formatMinionTitle, formatRunningProgress } from "./index.ts";
 
 describe("parseConfig", () => {
@@ -38,18 +38,6 @@ describe("loadConfig", () => {
 
 test("the minion prompt prevents recursive delegation", () => {
   expect(MINION_SYSTEM_PROMPT).toContain("Do not delegate to subagents or invoke minions");
-});
-
-describe("getRetryDelay", () => {
-  test("uses exponential backoff with full jitter", () => {
-    expect(getRetryDelay(0, () => 1)).toBe(2_000);
-    expect(getRetryDelay(1, () => 1)).toBe(4_000);
-    expect(getRetryDelay(2, () => 0.5)).toBe(4_000);
-  });
-
-  test("caps the delay", () => {
-    expect(getRetryDelay(10, () => 1)).toBe(30_000);
-  });
 });
 
 test.each([
@@ -95,7 +83,6 @@ const runningProgress = {
   finalOutput: "",
   usage: {} as never,
   durationMs: 1_000,
-  phase: "running",
 } as never;
 
 test("formatRunningProgress summarizes tool calls and the latest response", () => {
