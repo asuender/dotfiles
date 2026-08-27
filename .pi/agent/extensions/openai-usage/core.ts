@@ -37,7 +37,7 @@ type RateLimitResponse = z.infer<typeof RateLimitResponseSchema>;
 export interface UsageWindow {
   id: string;
   label: string;
-  remainingPercent: number;
+  usedPercent: number;
   durationSeconds: number;
   resetsAt?: number;
 }
@@ -64,7 +64,7 @@ function normalizeWindow(window: UsageWindowResponse, id: string, limitName?: st
   return {
     id,
     label: limitName ? `${limitName} ${durationLabel}` : durationLabel,
-    remainingPercent: 100 - window.used_percent,
+    usedPercent: window.used_percent,
     durationSeconds: window.limit_window_seconds,
     ...(window.reset_at !== undefined ? { resetsAt: window.reset_at * 1000 } : {}),
   };
@@ -117,8 +117,8 @@ export function formatDuration(seconds: number): string {
 }
 
 export function formatUsageWindow(window: UsageWindow): string {
-  const remaining = Math.round(window.remainingPercent);
-  return `${window.label} ${remaining}%`;
+  const used = Math.round(window.usedPercent);
+  return `${window.label} ${used}%`;
 }
 
 export function extractAccountId(accessToken: string): string | undefined {

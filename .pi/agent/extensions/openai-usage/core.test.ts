@@ -21,7 +21,7 @@ function tokenFor(accountId: string): string {
 }
 
 describe("parseUsagePayload", () => {
-  test("converts used percentages into remaining percentages", () => {
+  test("preserves used percentages from the API", () => {
     const snapshot = parseUsagePayload({
       plan_type: "plus",
       rate_limit: {
@@ -42,11 +42,11 @@ describe("parseUsagePayload", () => {
     assert.deepEqual(
       snapshot.windows.map((window) => ({
         label: window.label,
-        remainingPercent: window.remainingPercent,
+        usedPercent: window.usedPercent,
       })),
       [
-        { label: "5h", remainingPercent: 82.5 },
-        { label: "7d", remainingPercent: 60 },
+        { label: "5h", usedPercent: 17.5 },
+        { label: "7d", usedPercent: 40 },
       ],
     );
     assert.equal(snapshot.windows[0]?.resetsAt, 1_800_000_000_000);
@@ -75,8 +75,8 @@ describe("parseUsagePayload", () => {
       ],
     });
 
-    assert.equal(formatUsageWindow(snapshot.windows[0]!), "5h 100%");
-    assert.equal(formatUsageWindow(snapshot.windows[1]!), "Spark 7d 0%");
+    assert.equal(formatUsageWindow(snapshot.windows[0]!), "5h 0%");
+    assert.equal(formatUsageWindow(snapshot.windows[1]!), "Spark 7d 100%");
   });
 
   test("rejects responses without usable windows", () => {
@@ -154,7 +154,7 @@ describe("OpenAI authentication", () => {
     assert.equal(requestedUrl, "https://chatgpt.com/backend-api/wham/usage");
     assert.equal(requestedHeaders?.get("Authorization"), `Bearer ${token}`);
     assert.equal(requestedHeaders?.get("ChatGPT-Account-Id"), "account-456");
-    assert.equal(snapshot.windows[0]?.remainingPercent, 75);
+    assert.equal(snapshot.windows[0]?.usedPercent, 25);
   });
 
   test("does not expose response bodies in HTTP errors", async () => {

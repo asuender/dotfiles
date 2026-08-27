@@ -20,8 +20,8 @@ export default function openAIUsageExtension(pi: ExtensionAPI): void {
   }
 
   function windowColor(ctx: ExtensionContext, window: UsageWindow): "error" | "warning" | "muted" {
-    if (window.remainingPercent <= 10) return "error";
-    if (window.remainingPercent <= 25) return "warning";
+    if (window.usedPercent >= 90) return "error";
+    if (window.usedPercent >= 75) return "warning";
     return "muted";
   }
 
