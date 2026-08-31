@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-printf "URL: "
-read -r url
-git clone "$url" ~/coding/"$(basename "$url" .git)"
+url=$(gum input --placeholder="Paste remote Git url..." --strip-ansi)
+
+if [[ -n $url ]]; then
+  git clone "$url" ~/coding/"$(basename "$url" .git)"
+fi
+
 echo
 echo "[Press Enter to close]"
 read -r
