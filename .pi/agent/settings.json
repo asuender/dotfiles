@@ -15,7 +15,8 @@
     {
       "source": "npm:@ff-labs/pi-fff",
       "extensions": []
-    }
+    },
+    "npm:@nicknisi/pi-answer"
   ],
   "showCacheMissNotices": true
 }
