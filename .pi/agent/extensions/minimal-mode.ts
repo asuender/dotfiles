@@ -30,6 +30,7 @@ type TextResult = { content: Array<{ type: string; text?: string }> };
 type Nouns = [string, string];
 type PackageTool = { name: string; renderShell?: "default" | "self";[key: string]: any };
 type RenderCall = (args: any, theme: Theme, context: ToolRenderContext) => Text;
+type PackageOverride = { renderCall: RenderCall; nouns?: Nouns };
 
 function shortenPath(path: string): string {
   const home = homedir();
@@ -123,36 +124,40 @@ function getBuiltInTools(cwd: string) {
   return tools;
 }
 
-function capturePackageTools(pi: ExtensionAPI, registerPackage: (api: ExtensionAPI) => void): Map<string, PackageTool> {
-  const tools = new Map<string, PackageTool>();
-  const noOp = () => undefined;
+function registerPackageWithOverrides(
+  pi: ExtensionAPI,
+  registerPackage: (api: ExtensionAPI) => void,
+  overrides: Map<string, PackageOverride>,
+): void {
   const proxy = new Proxy(pi as any, {
     get(target, prop) {
-      if (prop === "registerTool") return (tool: PackageTool) => tools.set(tool.name, tool);
-      if (["on", "registerCommand", "registerShortcut", "registerMessageRenderer", "registerFlag"].includes(String(prop))) return noOp;
+      if (prop === "registerTool") {
+        return (tool: PackageTool) => {
+          const override = overrides.get(tool.name);
+          pi.registerTool(
+            override
+              ? { ...tool, renderShell: "self", renderCall: override.renderCall, renderResult: result(override.nouns) }
+              : tool,
+          );
+        };
+      }
       return target[prop as keyof typeof target];
     },
   }) as ExtensionAPI;
   registerPackage(proxy);
-  return tools;
 }
 
-function overridePackageTool(pi: ExtensionAPI, tool: PackageTool | undefined, renderCall: RenderCall, nouns?: Nouns) {
-  if (!tool) return;
-  pi.registerTool({ ...tool, renderShell: "self", renderCall, renderResult: result(nouns) } as any);
+function overridePackageTool(overrides: Map<string, PackageOverride>, name: string, renderCall: RenderCall, nouns?: Nouns) {
+  overrides.set(name, { renderCall, nouns });
 }
 
 function registerPackageTools(pi: ExtensionAPI): void {
-  const webTools = capturePackageTools(pi, webAccessExtension as any);
-  const fffTools = capturePackageTools(pi, fffExtension as any);
-
-  // Same extension owns package tools + overrides, avoiding cross-extension conflicts.
-  webAccessExtension(pi);
-  fffExtension(pi);
+  const webOverrides = new Map<string, PackageOverride>();
+  const fffOverrides = new Map<string, PackageOverride>();
 
   overridePackageTool(
-    pi,
-    webTools.get("web_search"),
+    webOverrides,
+    "web_search",
     call("search", (args, theme, context) => {
       const queries = Array.isArray(args.queries) ? args.queries : args.query ? [args.query] : [];
       const label = queries.length === 1 ? truncate(oneLine(queries[0]), 90) : `${queries.length || "..."} queries`;
@@ -165,8 +170,8 @@ function registerPackageTools(pi: ExtensionAPI): void {
   );
 
   overridePackageTool(
-    pi,
-    webTools.get("fetch_content"),
+    webOverrides,
+    "fetch_content",
     call("fetch", (args, theme, context) => {
       const urls = Array.isArray(args.urls) ? args.urls : args.url ? [args.url] : [];
       const label = urls.length === 1 ? truncate(oneLine(urls[0]), 90) : `${urls.length || "..."} urls`;
@@ -179,8 +184,8 @@ function registerPackageTools(pi: ExtensionAPI): void {
   );
 
   overridePackageTool(
-    pi,
-    webTools.get("code_search"),
+    webOverrides,
+    "code_search",
     call("code_search", (args, theme, context) => {
       let text = withTitle("code_search", theme, context, theme.fg("accent", truncate(oneLine(args.query), 90)));
       if (args.maxTokens !== undefined) text += theme.fg("toolOutput", ` max ${args.maxTokens}`);
@@ -190,8 +195,8 @@ function registerPackageTools(pi: ExtensionAPI): void {
   );
 
   overridePackageTool(
-    pi,
-    webTools.get("get_search_content"),
+    webOverrides,
+    "get_search_content",
     call("get_search_content", (args, theme, context) => {
       const selector = truncate(oneLine(args.query ?? args.url ?? (args.queryIndex !== undefined ? `query ${args.queryIndex}` : undefined) ?? (args.urlIndex !== undefined ? `url ${args.urlIndex}` : undefined) ?? "content"), 70);
       return withTitle("get_search_content", theme, context, `${theme.fg("accent", oneLine(args.responseId))}${theme.fg("toolOutput", ` ${selector}`)}`);
@@ -199,8 +204,8 @@ function registerPackageTools(pi: ExtensionAPI): void {
   );
 
   overridePackageTool(
-    pi,
-    fffTools.get("ffgrep"),
+    fffOverrides,
+    "ffgrep",
     call("ffgrep", (args, theme, context) => {
       let text = withTitle("ffgrep", theme, context, theme.fg("accent", `/${oneLine(args.pattern)}/`));
       text += theme.fg("toolOutput", ` in ${shortenPath(args.path || ".")}`);
@@ -212,8 +217,8 @@ function registerPackageTools(pi: ExtensionAPI): void {
   );
 
   overridePackageTool(
-    pi,
-    fffTools.get("fffind"),
+    fffOverrides,
+    "fffind",
     call("fffind", (args, theme, context) => {
       let text = withTitle("fffind", theme, context, theme.fg("accent", oneLine(args.pattern)));
       text += theme.fg("toolOutput", ` in ${shortenPath(args.path || ".")}`);
@@ -224,6 +229,24 @@ function registerPackageTools(pi: ExtensionAPI): void {
     ["file", "files"],
   );
 
+  overridePackageTool(
+    fffOverrides,
+    "fff-multi-grep",
+    call("fff-multi-grep", (args, theme, context) => {
+      const patterns = Array.isArray(args.patterns) ? args.patterns : [];
+      const label = patterns.length === 1 ? `/${oneLine(patterns[0])}/` : `${patterns.length || "..."} patterns`;
+      let text = withTitle("fff-multi-grep", theme, context, theme.fg("accent", label));
+      if (args.path) text += theme.fg("toolOutput", ` in ${shortenPath(args.path)}`);
+      if (args.limit !== undefined) text += theme.fg("toolOutput", ` limit ${args.limit}`);
+      return text;
+    }),
+    ["match", "matches"],
+  );
+
+  // Intercept registration instead of taking a synchronous snapshot. Package
+  // tools may be registered later from lifecycle hooks (pi-fff does this).
+  registerPackageWithOverrides(pi, webAccessExtension as any, webOverrides);
+  registerPackageWithOverrides(pi, fffExtension as any, fffOverrides);
 }
 
 function overrideBuiltIn<K extends keyof ReturnType<typeof createBuiltInTools>>(
