@@ -8,7 +8,7 @@ window-padding-balance
 
 theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
 # font-family = CaskaydiaCove Nerd Font Mono
-font-family = IoskeleyMonoTerm Nerd Font Medium
+font-family = IoskeleyMonoTerm Nerd Font Mono
 font-size = 18
 adjust-cell-width = -10%
 
