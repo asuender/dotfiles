@@ -134,7 +134,7 @@ function registerPackageWithOverrides(
       if (prop === "registerTool") {
         return (tool: PackageTool) => {
           const override = overrides.get(tool.name);
-          pi.registerTool(
+          (pi.registerTool as any)(
             override
               ? { ...tool, renderShell: "self", renderCall: override.renderCall, renderResult: result(override.nouns) }
               : tool,
