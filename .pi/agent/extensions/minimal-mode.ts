@@ -243,6 +243,10 @@ function registerPackageTools(pi: ExtensionAPI): void {
     ["match", "matches"],
   );
 
+  fffOverrides.set("grep", fffOverrides.get("ffgrep")!);
+  fffOverrides.set("find", fffOverrides.get("fffind")!);
+  fffOverrides.set("multi_grep", fffOverrides.get("fff-multi-grep")!);
+
   // Intercept registration instead of taking a synchronous snapshot. Package
   // tools may be registered later from lifecycle hooks (pi-fff does this).
   registerPackageWithOverrides(pi, webAccessExtension as any, webOverrides);
