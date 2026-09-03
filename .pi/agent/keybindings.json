@@ -1,7 +1,5 @@
 {
-  "tui.input.newLine": [
-    "shift+enter",
-    "ctrl+j"
-  ],
-  "app.session.tree": "alt+q"
+  "tui.input.newLine": ["shift+enter", "ctrl+j"],
+  "app.session.tree": "alt+q",
+  "app.session.resume": "alt+r"
 }
