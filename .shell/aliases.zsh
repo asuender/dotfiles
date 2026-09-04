@@ -40,6 +40,15 @@ alias c='chezmoi'
 alias d='docker'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
+# Docker shortcuts
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias dpa='docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias di='docker images'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f'
+
 # Git shortcuts
 alias g='git'
 alias gcm='git commit -m'
