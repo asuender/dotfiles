@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/anomalyco/opentui.git",
       "skillPath": "packages/web/src/content/SKILL.md",
-      "skillFolderHash": "0f56f62f3e7487cbe54e32a2c020b8ba462f9204",
+      "skillFolderHash": "a3d1c9741ee8d07428b1473244ed72d4bc7d63f5",
       "installedAt": "2026-07-01T21:05:17.217Z",
-      "updatedAt": "2026-09-10T17:43:40.173Z"
+      "updatedAt": "2026-09-29T09:31:23.137Z"
     },
     "migrate-oxlint": {
       "source": "oxc-project/oxc",
@@ -72,9 +72,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/humanlayer/skills.git",
       "skillPath": "plugins/show-me/skills/show-me/SKILL.md",
-      "skillFolderHash": "0bdb821a21e793a4f6f82a7078c052154447e5cc",
+      "skillFolderHash": "362200ac2fb3c17b765049444e88de73767e6d08",
       "installedAt": "2026-08-19T06:29:28.691Z",
-      "updatedAt": "2026-08-19T06:29:28.691Z"
+      "updatedAt": "2026-09-29T09:31:26.663Z"
     },
     "react-doctor": {
       "source": "millionco/react-doctor",
@@ -90,9 +90,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/middleapi/orpc.git",
       "skillPath": "skills/orpc/SKILL.md",
-      "skillFolderHash": "6c4b4526d7526aafde51394fed59f7baf6d7b2c8",
+      "skillFolderHash": "b3927100749d0eefe216f24bbce3b64ec2520451",
       "installedAt": "2026-08-29T15:01:13.590Z",
-      "updatedAt": "2026-09-10T17:43:43.979Z"
+      "updatedAt": "2026-09-29T09:31:32.506Z"
     },
     "orpc-contract": {
       "source": "middleapi/orpc",
@@ -108,9 +108,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/middleapi/orpc.git",
       "skillPath": "skills/orpc-migrate/SKILL.md",
-      "skillFolderHash": "68fdee41a95d71b7b1f964e3588376c87b6d8ce6",
+      "skillFolderHash": "950c8b922dfa1385e7bfa0ca3933812269e8d7d9",
       "installedAt": "2026-08-29T15:01:13.592Z",
-      "updatedAt": "2026-09-10T17:43:46.941Z"
+      "updatedAt": "2026-09-29T09:31:38.368Z"
     },
     "orpc-openapi": {
       "source": "middleapi/orpc",
@@ -120,6 +120,15 @@
       "skillFolderHash": "a56830d7e6d317c5006304a851c94f52d689d3ec",
       "installedAt": "2026-08-29T15:01:13.592Z",
       "updatedAt": "2026-09-10T17:43:49.650Z"
+    },
+    "test-audit": {
+      "source": "openclaw/openclaw",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/openclaw/openclaw.git",
+      "skillPath": ".agents/skills/test-audit/SKILL.md",
+      "skillFolderHash": "8015421942bcd215db0e73a13ec944d50ce01ec5",
+      "installedAt": "2026-09-29T09:41:40.761Z",
+      "updatedAt": "2026-09-29T09:41:40.761Z"
     }
   },
   "dismissed": {
@@ -127,14 +136,13 @@
   },
   "lastSelectedAgents": [
     "amp",
-    "antigravity",
-    "antigravity-cli",
     "cline",
     "codex",
     "cursor",
-    "deepagents",
+    "droid",
     "gemini-cli",
     "github-copilot",
+    "kilo",
     "kimi-code-cli",
     "opencode",
     "warp",
