@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.99.1",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6-sol",
-  "defaultThinkingLevel": "low",
+  "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "treeFilterMode": "no-tools",
   "theme": "dark",
@@ -20,5 +20,7 @@
     "npm:@nicknisi/pi-answer"
   ],
   "showCacheMissNotices": true,
-  "defaultTools": ["+codemode"]
+  "defaultTools": [
+    "+codemode"
+  ]
 }
