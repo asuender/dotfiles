@@ -20,6 +20,7 @@ for file in "$HOME/.shell"/*.zsh; do
 done
 
 # Shell completions
+eval "$(/Users/asuender/.local/bin/mise activate zsh)"
 
 export PATH="$PATH:$HOME/.fzf/bin"
 source <(fzf --zsh)
