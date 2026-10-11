@@ -7,8 +7,8 @@ copy_zshrc=false
 usage() {
   echo "Usage: $0 [--zshrc]"
   echo ""
-  echo "  Stow dotfiles from repo root into \$HOME."
-  echo "  --zshrc  Also copy .zshrc (not stowed; copied to \$HOME/.zshrc)"
+  echo "  Deploy dotfiles from the repo with mise."
+  echo "  --zshrc  Also copy .zshrc to \$HOME/.zshrc"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -29,14 +29,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if ! command -v stow >/dev/null 2>&1; then
-  echo "GNU Stow is required. Install it with 'brew install stow', 'sudo apt install stow', or your distro package manager."
+if ! command -v mise >/dev/null 2>&1; then
+  echo "mise is required: https://mise.jdx.dev/getting-started.html"
   exit 1
 fi
 
 (
   cd "$repo_dir"
-  stow -t "$HOME" .
+  mise trust mise.toml
+  mise dot apply
 )
 
 if $copy_zshrc; then

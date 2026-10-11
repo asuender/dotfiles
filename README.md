@@ -1,6 +1,6 @@
 # config
 
-Personal dotfiles managed with GNU Stow. Config lives at the repo root (`.config/`, `.shell/`, etc.) and is symlinked into `$HOME`.
+Personal dotfiles deployed with mise. Config lives at the repo root (`.config/`, `.shell/`, etc.) and is linked into `$HOME` by `mise.toml`.
 
 ## Hammerspoon - Whisper Dictation
 
@@ -17,34 +17,24 @@ The server URL, model path, and other settings are configured at the top of `.ha
 
 ## Install
 
-Install GNU Stow first:
+[Install mise](https://mise.jdx.dev/getting-started.html), then run:
 
 ```sh
-brew install stow
-# or
-sudo apt install stow
+./install.sh              # Link managed files into $HOME
+./install.sh --zshrc      # Also copy .zshrc
 ```
 
-Then install:
+The script trusts this repo's `mise.toml` and runs `mise dot apply`. To preview
+changes first, run `mise trust mise.toml` and `mise dot apply --dry-run` from
+the repo root. To check deployment later, run `mise dot status` here (or use
+`mise -C /path/to/dotfiles dot status` from another directory).
 
-```sh
-./install.sh              # Stow dotfiles into $HOME
-./install.sh --zshrc      # Stow dotfiles and copy .zshrc
-```
+mise will not overwrite existing real files when linking. Back up any
+conflicting files before applying; avoid `--force` unless you have reviewed
+what it would replace. Generated dependencies in
+`.pi/agent/extensions/node_modules` are excluded from deployment.
 
 On a VPS, also add the tmux overrides below.
-
-If Stow reports `cannot stow ... over existing target`, move the existing files out of the way first:
-
-```sh
-mv ~/.config/nvim ~/.config/nvim.backup
-mv ~/.shell ~/.shell.backup
-# etc.
-```
-
-Generated directories such as `~/.config/opencode/node_modules` are intentionally not tracked and can stay in the target directory.
-
-If upgrading from the old `common/` layout, unstow it first: `stow -D -t ~ common` (from the repo directory).
 
 ## VPS overrides
 

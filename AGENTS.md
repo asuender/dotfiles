@@ -1,6 +1,6 @@
 # Agent instructions
 
-Personal dotfiles managed with GNU Stow. Config lives at the repo root (`.config/`, `.shell/`, etc.) and is symlinked into `$HOME`.
+Personal dotfiles deployed with mise. Config lives at the repo root (`.config/`, `.shell/`, etc.) and is linked into `$HOME` using `mise.toml`.
 
 ## Development
 
