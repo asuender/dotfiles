@@ -1,6 +1,7 @@
 [tools]
 agent-browser = "latest"
 "aqua:neovim/neovim" = "latest"
+atuin = "latest"
 bat = "latest"
 delta = "latest"
 eza = "latest"

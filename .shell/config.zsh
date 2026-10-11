@@ -27,6 +27,7 @@ source <(fzf --zsh)
 
 eval "$(uv generate-shell-completion zsh)"
 eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
 
 # Folder changer
 
