@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/anomalyco/opentui.git",
       "skillPath": "packages/web/src/content/SKILL.md",
-      "skillFolderHash": "a3d1c9741ee8d07428b1473244ed72d4bc7d63f5",
+      "skillFolderHash": "d15c10743bbc08d498df558beda653bb495ac6b1",
       "installedAt": "2026-07-01T21:05:17.217Z",
-      "updatedAt": "2026-09-29T09:31:23.137Z"
+      "updatedAt": "2026-10-03T15:05:24.273Z"
     },
     "migrate-oxlint": {
       "source": "oxc-project/oxc",
