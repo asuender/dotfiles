@@ -17,16 +17,24 @@ The server URL, model path, and other settings are configured at the top of `.ha
 
 ## Install
 
-[Install mise](https://mise.jdx.dev/getting-started.html), then run:
+[Install mise](https://mise.jdx.dev/getting-started.html), then run from the repo root:
 
 ```sh
-./install.sh              # Link managed files into $HOME
-./install.sh --zshrc      # Also copy .zshrc
+mise trust mise.toml
+mise dot apply --dry-run  # Preview changes
+mise dot apply
+mise dot status
 ```
 
-The script trusts this repo's `mise.toml` and runs `mise dot apply`. To preview
-changes first, run `mise trust mise.toml` and `mise dot apply --dry-run` from
-the repo root. To check deployment later, run `mise dot status` here (or use
+`.zshrc` is an optional starting point, not a mise-managed file. To use it on a
+new machine, copy it once and then customize the copy locally:
+
+```sh
+cp .zshrc ~/.zshrc
+```
+
+This overwrites an existing `~/.zshrc`, so back it up first if needed. To check
+deployment later, run `mise dot status` here (or use
 `mise -C /path/to/dotfiles dot status` from another directory).
 
 mise will not overwrite existing real files when linking. Back up any
@@ -35,6 +43,29 @@ what it would replace. Generated dependencies in
 `.pi/agent/extensions/node_modules` are excluded from deployment.
 
 On a VPS, also add the tmux overrides below.
+
+## Dotfiles quick reference
+
+Run these commands from the repo root. Entries in `mise.toml` use `symlink-each`:
+edit source files in the repo (or through their links in `$HOME`), then apply to
+sync links. Unmanaged files in the target directories are left alone.
+
+| Task | Command |
+| --- | --- |
+| Preview changes | `mise dot apply --dry-run` |
+| Inspect differences | `mise dot diff` |
+| Deploy or repair links | `mise dot apply` |
+| Check for missing or changed targets | `mise dot status` |
+| Adopt an existing file into this repo | `mise dot add --local ~/.example` |
+| Stop managing a target | `mise dot unapply ~/.example` |
+
+Unapply a target **before** removing its entry from `mise.toml`; unapply removes
+the deployed link, not its source or config entry. `mise dot add` without
+`--local` writes to the global mise config by default. Preview before using
+`mise dot apply --force`, which can replace conflicting real files.
+
+See the [mise managed-files guide](https://mise.jdx.dev/dotfiles/managed.html)
+for other modes and options.
 
 ## VPS overrides
 
