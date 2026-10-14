@@ -276,9 +276,9 @@ function registerBuiltInTools(pi: ExtensionAPI) {
     "read",
     call("read", (args, theme, context) => {
       let text = withTitle("read", theme, context, theme.fg("accent", shortenPath(args.path || "...")));
-      if (args.offset !== undefined || args.limit !== undefined) {
+      if ((args.offset ?? 1) > 1 || args.limit != null) {
         const start = args.offset ?? 1;
-        const end = args.limit !== undefined ? start + args.limit - 1 : undefined;
+        const end = args.limit != null ? start + args.limit - 1 : undefined;
         text += theme.fg("warning", `:${start}${end ? `-${end}` : ""}`);
       }
       return text;
