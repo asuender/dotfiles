@@ -19,6 +19,7 @@ import {
   createLsTool,
   createReadTool,
   createWriteTool,
+  highlightCode,
   renderDiff,
 } from "@earendil-works/pi-coding-agent";
 import type { Theme } from "@earendil-works/pi-coding-agent";
@@ -332,4 +333,44 @@ function registerBuiltInTools(pi: ExtensionAPI) {
 export default function minimalMode(pi: ExtensionAPI) {
   registerPackageTools(pi);
   registerBuiltInTools(pi);
+
+  pi.registerToolRenderer((name, next) => {
+    if (name !== "codemode") return next();
+
+    const original = next();
+
+    return {
+      renderShell: "self",
+      renderCall: call("codemode", (args, theme, context) => {
+        const source = typeof args.code === "string" ? args.code : "";
+        const code = source.replace(/\r/g, "").trimEnd().replace(/\t/g, "  ");
+        const title = toolTitle("codemode", theme, context);
+        return code ? `${title}\n${highlightCode(code, "javascript").join("\n")}` : title;
+      }),
+      renderResult: (toolResult, view, theme, context) => {
+        // Preserve native nested-call details and output when expanded.
+        if (view.expanded && original?.renderResult) {
+          const component = original.renderResult(toolResult, view, theme, { ...context, lastComponent: undefined });
+          return {
+            render: (width: number) => component.render(Math.max(1, width - TOOL_INDENT * 2))
+              .map((line) => `${" ".repeat(TOOL_INDENT)}${line}`),
+            invalidate: () => component.invalidate(),
+          };
+        }
+
+        if (context.isError) {
+          const output = toolResult.content
+            .filter((block) => block.type === "text")
+            .map((block) => block.text)
+            .join("\n");
+          const error = output.includes("Script error:")
+            ? output.split("Script error:").slice(1).join("Script error:")
+            : output;
+          return errorSummary({ content: [{ type: "text", text: error }] }, theme);
+        }
+
+        return new Text("", TOOL_INDENT, 0);
+      },
+    };
+  });
 }

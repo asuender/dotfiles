@@ -1,9 +1,9 @@
 {
-  "lastChangelogVersion": "0.99.1",
+  "lastChangelogVersion": "1.2.0",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-sol",
+  "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "medium",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "treeFilterMode": "no-tools",
   "theme": "dark",
   "tuiMode": "fullscreen",
