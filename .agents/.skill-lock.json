@@ -129,6 +129,15 @@
       "skillFolderHash": "8015421942bcd215db0e73a13ec944d50ce01ec5",
       "installedAt": "2026-09-29T09:41:40.761Z",
       "updatedAt": "2026-09-29T09:41:40.761Z"
+    },
+    "human-writing": {
+      "source": "1999AZZAR/human-writing-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/1999AZZAR/human-writing-skill.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "7c0de1fb37192aed1e72af14c2b2b19dbe060f7e",
+      "installedAt": "2026-10-16T20:40:02.129Z",
+      "updatedAt": "2026-10-16T20:40:02.129Z"
     }
   },
   "dismissed": {
@@ -145,6 +154,7 @@
     "kilo",
     "kimi-code-cli",
     "opencode",
+    "pi",
     "warp",
     "zed"
   ]
