@@ -12,6 +12,8 @@ if [ -z "$theme" ]; then
     else
       theme=light
     fi
+  elif [ -f "$HOME/.config/omarchy/current/theme/light.mode" ]; then
+    theme=light
   fi
 fi
 
