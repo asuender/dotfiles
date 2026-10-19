@@ -137,7 +137,17 @@
       "skillPath": "SKILL.md",
       "skillFolderHash": "7c0de1fb37192aed1e72af14c2b2b19dbe060f7e",
       "installedAt": "2026-10-16T20:40:02.129Z",
-      "updatedAt": "2026-10-16T20:40:02.129Z"
+      "updatedAt": "2026-10-19T14:52:26.785Z"
+    },
+    "fframes-video": {
+      "source": "fframes.studio",
+      "sourceType": "well-known",
+      "sourceUrl": "https://fframes.studio/.well-known/agent-skills/fframes-video/SKILL.md",
+      "skillFolderHash": "",
+      "sourceBaseUrl": "https://fframes.studio",
+      "wellKnownDigest": "sha256:ad34b84108da67c08837a5a7cc1b741dd82f099fef46708940f19e6bcd2e56d5",
+      "installedAt": "2026-10-17T14:07:29.960Z",
+      "updatedAt": "2026-10-17T14:07:29.960Z"
     }
   },
   "dismissed": {

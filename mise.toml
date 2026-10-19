@@ -1,5 +1,5 @@
 [dotfiles]
-"~/.agents" = { source = ".agents", mode = "symlink-each" }
+"~/.agents" = { source = ".agents", mode = "symlink" }
 "~/.config" = { source = ".config", mode = "symlink-each" }
 "~/.hammerspoon" = { source = ".hammerspoon", mode = "symlink-each" }
 "~/.oh-my-zsh" = { source = ".oh-my-zsh", mode = "symlink-each" }
