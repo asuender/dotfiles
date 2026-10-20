@@ -3,7 +3,7 @@ set -euo pipefail
 
 cwd=$(tmux display-message -p '#{pane_current_path}')
 
-name=$(printf '%s\n' pi opencode codex cursor | fzf) || exit 0
+name=$(printf '%s\n' pi opencode codex cursor claude | fzf) || exit 0
 [[ -z "$name" ]] && exit 0
 
 case "$name" in
@@ -11,6 +11,7 @@ opencode) cmd="opencode --port" ;;
 pi) cmd="pi" ;;
 codex) cmd="codex" ;;
 cursor) cmd="cursor" ;;
+claude) cmd="claude" ;;
 *) exit 0 ;;
 esac
 
