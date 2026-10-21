@@ -67,6 +67,22 @@ the deployed link, not its source or config entry. `mise dot add` without
 See the [mise managed-files guide](https://mise.jdx.dev/dotfiles/managed.html)
 for other modes and options.
 
+## Agent skills
+
+`~/.agents` is linked as a whole directory, so global skills installed with the
+[skills CLI](https://github.com/vercel-labs/skills) land directly in this repo.
+Install for both the generic `~/.agents/skills/` format (`universal`) and Claude
+Code in one command, so the tracked copy, `.skill-lock.json`, and Claude's copy
+stay on the same version:
+
+```sh
+skills add <source> -g -a universal -a claude-code -s <skill> -y
+```
+
+`~/.claude/skills/` holds untracked copies, not symlinks. Installing for
+`claude-code` alone updates `.agents/.skill-lock.json` without updating the
+tracked skill files.
+
 ## VPS overrides
 
 On remote machines, create `~/.config/tmux/tmux.local.conf` for OSC 52 clipboard passthrough and proper terminal colors over SSH:
