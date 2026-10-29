@@ -71,17 +71,23 @@ for other modes and options.
 
 `~/.agents` is linked as a whole directory, so global skills installed with the
 [skills CLI](https://github.com/vercel-labs/skills) land directly in this repo.
-Install for both the generic `~/.agents/skills/` format (`universal`) and Claude
-Code in one command, so the tracked copy, `.skill-lock.json`, and Claude's copy
-stay on the same version:
+Install for the generic `~/.agents/skills/` format (`universal`) only, then link
+the skills into Claude Code:
 
 ```sh
-skills add <source> -g -a universal -a claude-code -s <skill> -y
+skills add <source> -g -a universal -s <skill> -y
+mise run link-claude-skills
 ```
 
-`~/.claude/skills/` holds untracked copies, not symlinks. Installing for
-`claude-code` alone updates `.agents/.skill-lock.json` without updating the
-tracked skill files.
+`~/.claude/skills/` is an untracked directory of per-skill symlinks
+(`<name> -> ../../.agents/skills/<name>`). It is not linked as a whole, because
+Claude Code stores its own `synced/` skills there and those would leak into
+agents that scan `~/.agents/skills` recursively.
+
+`link-claude-skills` is a global task (`.config/mise/config.toml`), so it runs
+from any directory. It links every skill missing from `~/.claude/skills/`,
+including custom ones, and removes links to deleted skills. Run it after adding
+or removing a skill and on a fresh machine. Updates need no rerun.
 
 ## VPS overrides
 

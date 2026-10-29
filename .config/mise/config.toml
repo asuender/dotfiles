@@ -46,3 +46,23 @@ zoxide = "latest"
 "brew:vhs" = "latest"
 "brew:watchman" = "latest"
 "brew:webp" = "latest"
+
+[tasks.link-claude-skills]
+description = "Symlink every skill in ~/.agents/skills into ~/.claude/skills"
+run = '''
+mkdir -p ~/.claude/skills
+for dir in ~/.agents/skills/*/; do
+  name=$(basename "$dir")
+  if [ ! -e ~/.claude/skills/"$name" ] && [ ! -L ~/.claude/skills/"$name" ]; then
+    ln -s ../../.agents/skills/"$name" ~/.claude/skills/"$name"
+    echo "linked $name"
+  fi
+done
+# Remove dangling links left behind by skills deleted from the repo
+for link in ~/.claude/skills/*; do
+  if [ -L "$link" ] && [ ! -e "$link" ]; then
+    rm "$link"
+    echo "removed $(basename "$link")"
+  fi
+done
+'''
