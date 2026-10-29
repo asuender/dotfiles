@@ -14,11 +14,6 @@ export PATH=$HOME/.local/bin:$PATH
 
 export HOMEBREW_NO_ENV_HINTS=1
 
-# Shell customizations (aliases, functions, envs)
-for file in "$HOME/.shell"/*.zsh; do
-  [[ -f "$file" && "$file" != "$HOME/.shell/config.zsh" ]] && source "$file"
-done
-
 # Shell completions
 eval "$(/Users/asuender/.local/bin/mise activate zsh)"
 
@@ -28,6 +23,11 @@ source <(fzf --zsh)
 eval "$(uv generate-shell-completion zsh)"
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
+
+# Shell customizations (aliases, functions, envs)
+for file in "$HOME/.shell"/*.zsh; do
+  [[ -f "$file" && "$file" != "$HOME/.shell/config.zsh" ]] && source "$file"
+done
 
 # Folder changer
 
