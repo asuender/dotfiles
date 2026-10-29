@@ -18,6 +18,7 @@ PROMPT_HEAD=""
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  docker
   zsh-autosuggestions
 )
 

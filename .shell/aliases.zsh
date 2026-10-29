@@ -46,6 +46,18 @@ alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
 
+# Docker shortcuts - override oh-my-zsh docker plugin where names overlap
+_dps_fmt='table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+alias dps="docker ps --format '$_dps_fmt'"
+alias dpsa="docker ps -a --format '$_dps_fmt'"
+unset _dps_fmt
+alias di="docker images --format 'table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedSince}}'"
+alias dl='docker logs -f --tail 100'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f --tail 100'
+
 # Zsh config
 alias zc="$EDITOR $HOME/.zshrc"
 alias zs="source $HOME/.zshrc"
