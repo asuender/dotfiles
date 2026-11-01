@@ -4,7 +4,7 @@ window-height = 35
 window-padding-x = 10
 # window-padding-y = 10,0
 window-padding-color = background
-window-padding-balance
+window-padding-balance = equal
 
 theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
 # font-family = CaskaydiaCove Nerd Font Mono

@@ -1,0 +1,175 @@
+onboarding = false
+
+[ui]
+agent_panel_sort = "priority"
+show_agent_labels_on_pane_borders = true
+# Match tmux @scroll-speed-num-lines-per-scroll 1
+mouse_scroll_lines = 1
+# Match tmux M-n instant new-window (no name prompt)
+prompt_new_tab_name = false
+
+# ---------------------------------------------------------------------------
+# Keybindings mirrored from ~/.config/tmux/tmux.conf
+# Direct alt chords match the prefix-free tmux binds; prefix+ defaults kept
+# as secondary shortcuts where herdr already defines them.
+#
+# Not replicated (no herdr equivalent or unsupported key name):
+#   M-Home / M-End  - herdr key parser has no home/end; see alt+minus / alt+\
+#   M-d             - toggle default tmux session
+#   C-L             - clear-history
+#   prefix+x / X    - confirm-before kill (close_tab / close_workspace cover this)
+# ---------------------------------------------------------------------------
+[keys]
+# Window/tab navigation: M-1..5 select-window -t 1..5
+switch_tab = ["prefix+1..9", "alt+1..9"]
+
+# M-n new-window shell
+new_tab = ["prefix+c", "alt+n"]
+
+# M-L kill-window
+close_tab = ["prefix+shift+x", "alt+shift+l"]
+
+# M-r rename-window / M-R rename-session
+rename_tab = ["prefix+shift+t", "alt+r"]
+rename_workspace = ["prefix+shift+w", "alt+shift+r"]
+
+# M-Home split -v / M-End split -h (home/end unsupported; closest free chords)
+split_horizontal = ["prefix+minus", "alt+minus"]
+split_vertical = ["prefix+v", "alt+backslash"]
+
+# M-j tms / M-s tms switch -> workspace/goto pickers
+workspace_picker = ["prefix+w", "alt+j"]
+goto = ["prefix+g", "alt+s"]
+
+# reload config (tmux: prefix+,)
+reload_config = ["prefix+shift+r", "prefix+comma"]
+
+# M-o switch-client -l (last session) ~ previous workspace
+previous_workspace = "alt+o"
+
+# ---------------------------------------------------------------------------
+# Custom commands (tmux run-shell / new-window with a command)
+# ---------------------------------------------------------------------------
+
+# M-S-Left/Down/Up/Right resize-pane by a small step
+[[keys.command]]
+key = "alt+shift+left"
+type = "shell"
+command = "herdr pane resize --direction left --amount 0.05"
+description = "resize pane left"
+
+[[keys.command]]
+key = "alt+shift+down"
+type = "shell"
+command = "herdr pane resize --direction down --amount 0.05"
+description = "resize pane down"
+
+[[keys.command]]
+key = "alt+shift+up"
+type = "shell"
+command = "herdr pane resize --direction up --amount 0.05"
+description = "resize pane up"
+
+[[keys.command]]
+key = "alt+shift+right"
+type = "shell"
+command = "herdr pane resize --direction right --amount 0.05"
+description = "resize pane right"
+
+# M-m new-window nvim .
+[[keys.command]]
+key = "alt+m"
+type = "shell"
+command = '''
+cwd="${HERDR_ACTIVE_PANE_CWD:-$HOME}"
+out=$(herdr tab create --label nvim --cwd "$cwd" --focus) || exit 1
+pane=$(printf '%s' "$out" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["root_pane"]["pane_id"])')
+# Wait briefly for the shell to come up before submitting the command.
+for _ in 1 2 3 4 5; do
+  herdr pane run "$pane" "${EDITOR:-nvim} ." >/dev/null 2>&1 && exit 0
+  sleep 0.1
+done
+'''
+description = "new nvim tab"
+
+# M-, new-window opencode
+[[keys.command]]
+key = "alt+comma"
+type = "shell"
+command = '''
+cwd="${HERDR_ACTIVE_PANE_CWD:-$HOME}"
+out=$(herdr tab create --label opencode --cwd "$cwd" --focus) || exit 1
+pane=$(printf '%s' "$out" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["root_pane"]["pane_id"])')
+for _ in 1 2 3 4 5; do
+  herdr pane run "$pane" "opencode --port" >/dev/null 2>&1 && exit 0
+  sleep 0.1
+done
+'''
+description = "new opencode tab"
+
+# M-. new-window pi
+[[keys.command]]
+key = "alt+period"
+type = "shell"
+command = '''
+cwd="${HERDR_ACTIVE_PANE_CWD:-$HOME}"
+out=$(herdr tab create --label pi --cwd "$cwd" --focus) || exit 1
+pane=$(printf '%s' "$out" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["root_pane"]["pane_id"])')
+for _ in 1 2 3 4 5; do
+  herdr pane run "$pane" "pi" >/dev/null 2>&1 && exit 0
+  sleep 0.1
+done
+'''
+description = "new pi tab"
+
+# M-w tmux-dev: if single tab, open nvim + codex tabs
+[[keys.command]]
+key = "alt+w"
+type = "shell"
+command = '''
+cwd="${HERDR_ACTIVE_PANE_CWD:-$HOME}"
+ws="${HERDR_ACTIVE_WORKSPACE_ID:-}"
+ws_args=()
+[ -n "$ws" ] && ws_args=(--workspace "$ws")
+
+count=$(herdr tab list "${ws_args[@]}" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["result"]["tabs"]))')
+[ "$count" -gt 1 ] && exit 0
+
+run_in_new_tab() {
+  label="$1"; shift
+  out=$(herdr tab create --label "$label" --cwd "$cwd" --focus) || return 1
+  pane=$(printf '%s' "$out" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["root_pane"]["pane_id"])')
+  for _ in 1 2 3 4 5; do
+    herdr pane run "$pane" "$*" >/dev/null 2>&1 && return 0
+    sleep 0.1
+  done
+}
+
+run_in_new_tab nvim "${EDITOR:-nvim} ."
+run_in_new_tab codex codex
+
+nvim_tab=$(herdr tab list "${ws_args[@]}" | python3 -c 'import json,sys
+for t in json.load(sys.stdin)["result"]["tabs"]:
+    if t.get("label") == "nvim":
+        print(t["tab_id"]); break
+')
+[ -n "$nvim_tab" ] && herdr tab focus "$nvim_tab"
+'''
+description = "dev tabs: nvim + codex"
+
+# M-c clone-repo popup (tmux-clone)
+[[keys.command]]
+key = "alt+c"
+type = "popup"
+command = '''
+printf "URL: "
+read -r url
+[ -z "$url" ] && exit 0
+git clone "$url" "$HOME/coding/$(basename "$url" .git)"
+echo
+echo "[Press Enter to close]"
+read -r
+'''
+description = "clone repository"
+width = "70%"
+height = "30%"

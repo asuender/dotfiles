@@ -1,4 +1,10 @@
-bookmarks = ["$HOME/.config", "$HOME/.claude", "$HOME/coding"]
+bookmarks = [
+  "$HOME/.config",
+  "$HOME/.claude",
+  "$HOME/coding",
+  "$HOME/videos",
+  "$HOME/games",
+]
 
 [[search_dirs]]
 path = "$HOME/coding"
