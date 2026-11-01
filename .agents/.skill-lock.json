@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/anomalyco/opentui.git",
       "skillPath": "packages/web/src/content/SKILL.md",
-      "skillFolderHash": "d15c10743bbc08d498df558beda653bb495ac6b1",
+      "skillFolderHash": "d57ee197c8dc82393274115ae418285a149945a9",
       "installedAt": "2026-07-01T21:05:17.217Z",
-      "updatedAt": "2026-10-03T15:05:24.273Z"
+      "updatedAt": "2026-10-20T13:41:45.903Z"
     },
     "migrate-oxlint": {
       "source": "oxc-project/oxc",
@@ -24,9 +24,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/oxc-project/oxc.git",
       "skillPath": ".agents/skills/migrate-oxfmt/SKILL.md",
-      "skillFolderHash": "555c27dbc9fdb700f05394f722a59dc96e58d760",
+      "skillFolderHash": "f4cce91fac4c003170ac23a1f8b5c18719ad45d9",
       "installedAt": "2026-08-14T18:55:28.645Z",
-      "updatedAt": "2026-08-14T18:55:28.645Z"
+      "updatedAt": "2026-10-20T13:41:52.395Z"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
@@ -53,19 +53,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/productivity/grilling/SKILL.md",
-      "skillFolderHash": "f0732035b8b1b60ae39454e4191caef32fa91903",
+      "skillFolderHash": "28aceb4c9567b985cb47f7db88cf23c9f33af8b8",
       "installedAt": "2026-08-19T06:24:39.639Z",
-      "updatedAt": "2026-09-10T17:43:41.593Z"
+      "updatedAt": "2026-10-20T13:41:53.789Z"
     },
     "handoff": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/productivity/handoff/SKILL.md",
-      "skillFolderHash": "2242e8f05424b8c2ae94194a90d97b88d16108ec",
-      "pluginName": "mattpocock-skills",
+      "skillFolderHash": "ce24892bd2d4b9e7fd5ac9b95c03175e18bef388",
       "installedAt": "2026-08-19T06:27:53.018Z",
-      "updatedAt": "2026-08-19T06:27:53.018Z"
+      "updatedAt": "2026-10-20T13:41:55.103Z"
     },
     "show-me": {
       "source": "humanlayer/skills",
@@ -81,9 +80,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/millionco/react-doctor.git",
       "skillPath": "skills/react-doctor/SKILL.md",
-      "skillFolderHash": "549e7d8728550f1f3fc72572b8601c3b11e801ac",
+      "skillFolderHash": "d3deec46812d0387d3ff41e6139ec7a44802037f",
       "installedAt": "2026-08-19T06:39:18.134Z",
-      "updatedAt": "2026-08-19T06:39:18.134Z"
+      "updatedAt": "2026-10-20T13:41:58.338Z"
     },
     "orpc": {
       "source": "middleapi/orpc",
@@ -126,9 +125,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/openclaw/openclaw.git",
       "skillPath": ".agents/skills/test-audit/SKILL.md",
-      "skillFolderHash": "8015421942bcd215db0e73a13ec944d50ce01ec5",
+      "skillFolderHash": "82367863dec20b463d0c361d0c754c728bed5827",
       "installedAt": "2026-09-29T09:41:40.761Z",
-      "updatedAt": "2026-09-29T09:41:40.761Z"
+      "updatedAt": "2026-10-20T13:42:41.511Z"
     },
     "human-writing": {
       "source": "1999AZZAR/human-writing-skill",
@@ -145,9 +144,27 @@
       "sourceUrl": "https://fframes.studio/.well-known/agent-skills/fframes-video/SKILL.md",
       "skillFolderHash": "",
       "sourceBaseUrl": "https://fframes.studio",
-      "wellKnownDigest": "sha256:ad34b84108da67c08837a5a7cc1b741dd82f099fef46708940f19e6bcd2e56d5",
+      "wellKnownDigest": "sha256:5983f4e6bffdb0811928335c7e2bcf9e332eb728f723ef25f42d5e00dbbbe64d",
       "installedAt": "2026-10-17T14:07:29.960Z",
-      "updatedAt": "2026-10-17T14:07:29.960Z"
+      "updatedAt": "2026-10-20T13:41:36.553Z"
+    },
+    "daytona": {
+      "source": "daytona/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/daytona/skills.git",
+      "skillPath": "skills/daytona/SKILL.md",
+      "skillFolderHash": "77fdc5533f5d6742a8b93297ed8478343a993145",
+      "installedAt": "2026-10-20T05:30:44.876Z",
+      "updatedAt": "2026-10-20T05:30:44.876Z"
+    },
+    "writing-style": {
+      "source": "pydantic/monty",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/pydantic/monty.git",
+      "skillPath": ".agents/skills/writing-style/SKILL.md",
+      "skillFolderHash": "2c710c09d929ae972c079919eba5917094a9abbb",
+      "installedAt": "2026-11-01T13:32:31.067Z",
+      "updatedAt": "2026-11-01T13:32:31.067Z"
     }
   },
   "dismissed": {
@@ -159,6 +176,7 @@
     "codex",
     "cursor",
     "droid",
+    "fx",
     "gemini-cli",
     "github-copilot",
     "kilo",
