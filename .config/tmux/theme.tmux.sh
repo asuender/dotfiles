@@ -12,7 +12,8 @@ if [ -z "$theme" ]; then
     else
       theme=light
     fi
-  elif [ -f "$HOME/.config/omarchy/current/theme/light.mode" ]; then
+  elif command -v omarchy-theme-color >/dev/null 2>&1 &&
+    [ "$(omarchy-theme-color mode 2>/dev/null)" = "light" ]; then
     theme=light
   fi
 fi
