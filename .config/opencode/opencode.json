@@ -57,8 +57,7 @@
     }
   },
   "plugin": [
-    "octto",
-    "file:///Users/asuender/coding/ponytail/.opencode/plugins/ponytail.js"
+    "octto"
   ],
   "experimental": {
     "disable_paste_summary": true
