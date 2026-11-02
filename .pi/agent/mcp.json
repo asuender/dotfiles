@@ -4,10 +4,9 @@
       "args": ["mcp", "start"],
       "command": "daytona",
       "env": {
-        "HOME": "/Users/asuender",
-        "PATH": "/Users/asuender:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin"
-      },
-      "logFile": "/Users/asuender/.daytona/daytona-mcp.log"
+        "HOME": "${HOME}",
+        "PATH": "${PATH}"
+      }
     },
     "superlogical": {
       "url": "https://www.superlogical.com/rex/community-mcp"
