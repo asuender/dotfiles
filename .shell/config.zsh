@@ -15,7 +15,7 @@ export PATH=$HOME/.local/bin:$PATH
 export HOMEBREW_NO_ENV_HINTS=1
 
 # Shell completions
-eval "$(/Users/asuender/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
 
 export PATH="$PATH:$HOME/.fzf/bin"
 source <(fzf --zsh)
