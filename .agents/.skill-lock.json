@@ -1,33 +1,6 @@
 {
   "version": 3,
   "skills": {
-    "opentui": {
-      "source": "anomalyco/opentui",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/anomalyco/opentui.git",
-      "skillPath": "packages/web/src/content/SKILL.md",
-      "skillFolderHash": "d57ee197c8dc82393274115ae418285a149945a9",
-      "installedAt": "2026-07-01T21:05:17.217Z",
-      "updatedAt": "2026-10-20T13:41:45.903Z"
-    },
-    "migrate-oxlint": {
-      "source": "oxc-project/oxc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/oxc-project/oxc.git",
-      "skillPath": ".agents/skills/migrate-oxlint/SKILL.md",
-      "skillFolderHash": "a21257269149e85f2613d93f20258dc5cc921cda",
-      "installedAt": "2026-08-14T18:29:38.684Z",
-      "updatedAt": "2026-08-14T18:29:38.684Z"
-    },
-    "migrate-oxfmt": {
-      "source": "oxc-project/oxc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/oxc-project/oxc.git",
-      "skillPath": ".agents/skills/migrate-oxfmt/SKILL.md",
-      "skillFolderHash": "f4cce91fac4c003170ac23a1f8b5c18719ad45d9",
-      "installedAt": "2026-08-14T18:55:28.645Z",
-      "updatedAt": "2026-10-20T13:41:52.395Z"
-    },
     "grill-with-docs": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -75,42 +48,6 @@
       "installedAt": "2026-08-19T06:29:28.691Z",
       "updatedAt": "2026-09-29T09:31:26.663Z"
     },
-    "react-doctor": {
-      "source": "millionco/react-doctor",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/millionco/react-doctor.git",
-      "skillPath": "skills/react-doctor/SKILL.md",
-      "skillFolderHash": "d3deec46812d0387d3ff41e6139ec7a44802037f",
-      "installedAt": "2026-08-19T06:39:18.134Z",
-      "updatedAt": "2026-10-20T13:41:58.338Z"
-    },
-    "orpc": {
-      "source": "middleapi/orpc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/middleapi/orpc.git",
-      "skillPath": "skills/orpc/SKILL.md",
-      "skillFolderHash": "b3927100749d0eefe216f24bbce3b64ec2520451",
-      "installedAt": "2026-08-29T15:01:13.590Z",
-      "updatedAt": "2026-09-29T09:31:32.506Z"
-    },
-    "orpc-contract": {
-      "source": "middleapi/orpc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/middleapi/orpc.git",
-      "skillPath": "skills/orpc-contract/SKILL.md",
-      "skillFolderHash": "7e854bb13ecefca583d1cfbe0b0f617adbc3f544",
-      "installedAt": "2026-08-29T15:01:13.592Z",
-      "updatedAt": "2026-08-29T15:01:13.592Z"
-    },
-    "orpc-migrate": {
-      "source": "middleapi/orpc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/middleapi/orpc.git",
-      "skillPath": "skills/orpc-migrate/SKILL.md",
-      "skillFolderHash": "950c8b922dfa1385e7bfa0ca3933812269e8d7d9",
-      "installedAt": "2026-08-29T15:01:13.592Z",
-      "updatedAt": "2026-09-29T09:31:38.368Z"
-    },
     "orpc-openapi": {
       "source": "middleapi/orpc",
       "sourceType": "github",
@@ -128,15 +65,6 @@
       "skillFolderHash": "82367863dec20b463d0c361d0c754c728bed5827",
       "installedAt": "2026-09-29T09:41:40.761Z",
       "updatedAt": "2026-10-20T13:42:41.511Z"
-    },
-    "human-writing": {
-      "source": "1999AZZAR/human-writing-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/1999AZZAR/human-writing-skill.git",
-      "skillPath": "SKILL.md",
-      "skillFolderHash": "7c0de1fb37192aed1e72af14c2b2b19dbe060f7e",
-      "installedAt": "2026-10-16T20:40:02.129Z",
-      "updatedAt": "2026-10-19T14:52:26.785Z"
     },
     "fframes-video": {
       "source": "fframes.studio",
@@ -184,6 +112,7 @@
     "opencode",
     "pi",
     "warp",
-    "zed"
+    "zed",
+    "claude-code"
   ]
 }
