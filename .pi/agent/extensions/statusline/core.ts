@@ -47,6 +47,12 @@ export interface UsageSnapshot {
   windows: UsageWindow[];
 }
 
+export interface TokenUsage {
+  input: number;
+  cacheRead: number;
+  cacheWrite: number;
+}
+
 export interface FetchUsageOptions {
   signal?: AbortSignal;
   fetch?: typeof globalThis.fetch;
@@ -119,6 +125,29 @@ export function formatDuration(seconds: number): string {
 export function formatUsageWindow(window: UsageWindow): string {
   const used = Math.round(window.usedPercent);
   return `${window.label} ${used}%`;
+}
+
+export function usageLevel(usedPercent: number): "error" | "warning" | "text" {
+  const used = Math.round(usedPercent);
+  if (used >= 90) return "error";
+  if (used >= 75) return "warning";
+  return "text";
+}
+
+export function formatTokens(count: number): string {
+  if (count >= 999_500) return `${Math.round(count / 100_000) / 10}M`;
+  if (count >= 1_000) return `${Math.round(count / 1_000)}k`;
+  return `${Math.round(count)}`;
+}
+
+export function cacheHitRatio(usages: TokenUsage[]): number | undefined {
+  let cacheRead = 0;
+  let totalInput = 0;
+  for (const usage of usages) {
+    cacheRead += usage.cacheRead;
+    totalInput += usage.input + usage.cacheRead + usage.cacheWrite;
+  }
+  return totalInput > 0 ? cacheRead / totalInput : undefined;
 }
 
 export function extractAccountId(accessToken: string): string | undefined {

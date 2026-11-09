@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
 import {
+  cacheHitRatio,
   extractAccountId,
   fetchUsage,
   formatDuration,
+  formatTokens,
   formatUsageWindow,
   parseUsagePayload,
+  usageLevel,
 } from "./core.ts";
 
 function tokenFor(accountId: string): string {
@@ -115,6 +118,40 @@ describe("formatDuration", () => {
     assert.equal(formatDuration(18_000), "5h");
     assert.equal(formatDuration(86_400), "1d");
     assert.equal(formatDuration(604_800), "7d");
+  });
+});
+
+describe("usageLevel", () => {
+  test("applies thresholds to the displayed percentage", () => {
+    assert.equal(usageLevel(74.4), "text");
+    assert.equal(usageLevel(74.5), "warning");
+    assert.equal(usageLevel(89.4), "warning");
+    assert.equal(usageLevel(89.5), "error");
+  });
+});
+
+describe("formatTokens", () => {
+  test("abbreviates counts without rounding into the wrong unit", () => {
+    assert.equal(formatTokens(999), "999");
+    assert.equal(formatTokens(24_600), "25k");
+    assert.equal(formatTokens(999_499), "999k");
+    assert.equal(formatTokens(999_500), "1M");
+    assert.equal(formatTokens(1_240_000), "1.2M");
+  });
+});
+
+describe("cacheHitRatio", () => {
+  test("is cumulative across all input tokens", () => {
+    const ratio = cacheHitRatio([
+      { input: 100, cacheRead: 0, cacheWrite: 900 },
+      { input: 100, cacheRead: 900, cacheWrite: 0 },
+    ]);
+    assert.equal(ratio, 900 / 2_000);
+  });
+
+  test("is undefined before any input tokens are reported", () => {
+    assert.equal(cacheHitRatio([]), undefined);
+    assert.equal(cacheHitRatio([{ input: 0, cacheRead: 0, cacheWrite: 0 }]), undefined);
   });
 });
 
