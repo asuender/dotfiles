@@ -4,6 +4,7 @@ bookmarks = [
   "$HOME/coding",
   "$HOME/videos",
   "$HOME/games",
+  "$HOME/dotfiles",
 ]
 
 [[search_dirs]]
