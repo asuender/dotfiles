@@ -8,7 +8,7 @@ rainbow=$'\033[38;5;196mf\033[38;5;178ma\033[38;5;34ms\033[38;5;33mt\033[0m'
 sep="${dim} · ${reset}"
 
 # Fields are joined with a non-whitespace separator so `read` keeps empty ones.
-IFS=$'\x1f' read -r model effort fast dir ctx ctx_used ctx_size cache five_hour seven_day < <(
+IFS=$'\x1f' read -r model effort fast dir cwd ctx ctx_used ctx_size cache five_hour seven_day < <(
   jq -r '
     def pct: if type == "number" then round else "" end;
     def ratio_pct:
@@ -24,6 +24,7 @@ IFS=$'\x1f' read -r model effort fast dir ctx ctx_used ctx_size cache five_hour 
       .effort.level,
       .fast_mode,
       .workspace.project_dir,
+      .workspace.current_dir,
       (.context_window.used_percentage | pct),
       (.context_window.total_input_tokens | tokens),
       (.context_window.context_window_size | tokens),
@@ -49,7 +50,11 @@ name=$model
 [[ $fast == true ]] && name+=" ${rainbow}"
 
 folder=${dir##*/}
-line="${folder:-/}${sep}${name}${sep}$(usage ctx "${ctx:-0}")"
+branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
+
+line="${folder:-/}"
+[[ -n $branch ]] && line+=" ${dim}(git: ${branch})${reset}"
+line+="${sep}${name}${sep}$(usage ctx "${ctx:-0}")"
 [[ -n $ctx_used && -n $ctx_size ]] && line+=" ${dim}(${ctx_used}/${ctx_size})${reset}"
 [[ -n $cache ]] && line+=" ${dim}ch ${cache}%${reset}"
 
