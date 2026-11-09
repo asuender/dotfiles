@@ -23,7 +23,7 @@ IFS=$'\x1f' read -r model effort fast dir ctx ctx_used ctx_size cache five_hour 
       .model.display_name,
       .effort.level,
       .fast_mode,
-      .workspace.current_dir,
+      .workspace.project_dir,
       (.context_window.used_percentage | pct),
       (.context_window.total_input_tokens | tokens),
       (.context_window.context_window_size | tokens),
