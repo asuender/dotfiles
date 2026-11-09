@@ -69,9 +69,11 @@ export default function statuslineExtension(pi: ExtensionAPI): void {
     const model =
       theme.fg("text", ctx.model?.id ?? "no model") +
       (thinking === "off" ? "" : ` ${theme.fg("dim", thinking)}`);
+    const sessionName = pi.getSessionName();
 
     return [
       theme.fg("text", basename(ctx.cwd) || "/"),
+      sessionName ? theme.fg("text", sessionName) : undefined,
       model,
       renderContext(ctx, theme),
       renderUsage(usage, theme),
@@ -185,6 +187,10 @@ export default function statuslineExtension(pi: ExtensionAPI): void {
   });
 
   pi.on("thinking_level_select", async () => {
+    requestRender?.();
+  });
+
+  pi.on("session_info_changed", async () => {
     requestRender?.();
   });
 
