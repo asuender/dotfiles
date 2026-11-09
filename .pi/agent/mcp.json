@@ -1,15 +1,3 @@
 {
-  "mcpServers": {
-    "daytona-mcp": {
-      "args": ["mcp", "start"],
-      "command": "daytona",
-      "env": {
-        "HOME": "${HOME}",
-        "PATH": "${PATH}"
-      }
-    },
-    "superlogical": {
-      "url": "https://www.superlogical.com/rex/community-mcp"
-    }
-  }
+  "mcpServers": {}
 }
