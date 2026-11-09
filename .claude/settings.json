@@ -4,5 +4,9 @@
   "enableArtifact": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
-  "theme": "auto"
+  "theme": "auto",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  }
 }

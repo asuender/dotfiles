@@ -3,3 +3,4 @@ node_modules/
 /.claude/*
 !/.claude/settings.json
 !/.claude/CLAUDE.md
+!/.claude/statusline.sh
