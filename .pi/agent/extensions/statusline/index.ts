@@ -27,6 +27,13 @@ function sessionUsages(ctx: ExtensionContext): TokenUsage[] {
     );
 }
 
+function renderProject(cwd: string, branch: string | null, theme: Theme): string {
+  const project = theme.fg("text", basename(cwd) || "/");
+  // Pi reports a detached HEAD as the literal branch name "detached".
+  if (!branch || branch === "detached") return project;
+  return `${project} ${theme.fg("dim", `(git: ${branch})`)}`;
+}
+
 function renderContext(ctx: ExtensionContext, theme: Theme): string {
   const context = ctx.getContextUsage();
   if (context?.percent == null || context.tokens == null) return theme.fg("text", "ctx ?");
@@ -64,7 +71,7 @@ export default function statuslineExtension(pi: ExtensionAPI): void {
     return ctx.modelRegistry.isUsingOAuth(model) && provider?.auth.oauth?.isSubscription === true;
   }
 
-  function renderStatusline(ctx: ExtensionContext, theme: Theme): string {
+  function renderStatusline(ctx: ExtensionContext, theme: Theme, branch: string | null): string {
     const thinking = pi.getThinkingLevel();
     const model =
       theme.fg("text", ctx.model?.id ?? "no model") +
@@ -72,7 +79,7 @@ export default function statuslineExtension(pi: ExtensionAPI): void {
     const sessionName = pi.getSessionName();
 
     return [
-      theme.fg("text", basename(ctx.cwd) || "/"),
+      renderProject(ctx.cwd, branch, theme),
       sessionName ? theme.fg("text", sessionName) : undefined,
       model,
       renderContext(ctx, theme),
@@ -92,7 +99,8 @@ export default function statuslineExtension(pi: ExtensionAPI): void {
         },
         invalidate() {},
         render(width: number): string[] {
-          const lines = [truncateToWidth(renderStatusline(ctx, theme), width)];
+          const statusline = renderStatusline(ctx, theme, footerData.getGitBranch());
+          const lines = [truncateToWidth(statusline, width)];
 
           // setFooter replaces the built-in status line, so other extensions render here.
           const statuses = [...footerData.getExtensionStatuses().entries()]
