@@ -48,15 +48,6 @@
       "installedAt": "2026-08-19T06:29:28.691Z",
       "updatedAt": "2026-09-29T09:31:26.663Z"
     },
-    "orpc-openapi": {
-      "source": "middleapi/orpc",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/middleapi/orpc.git",
-      "skillPath": "skills/orpc-openapi/SKILL.md",
-      "skillFolderHash": "a56830d7e6d317c5006304a851c94f52d689d3ec",
-      "installedAt": "2026-08-29T15:01:13.592Z",
-      "updatedAt": "2026-09-10T17:43:49.650Z"
-    },
     "test-audit": {
       "source": "openclaw/openclaw",
       "sourceType": "github",
@@ -75,15 +66,6 @@
       "wellKnownDigest": "sha256:5983f4e6bffdb0811928335c7e2bcf9e332eb728f723ef25f42d5e00dbbbe64d",
       "installedAt": "2026-10-17T14:07:29.960Z",
       "updatedAt": "2026-10-20T13:41:36.553Z"
-    },
-    "daytona": {
-      "source": "daytona/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/daytona/skills.git",
-      "skillPath": "skills/daytona/SKILL.md",
-      "skillFolderHash": "77fdc5533f5d6742a8b93297ed8478343a993145",
-      "installedAt": "2026-10-20T05:30:44.876Z",
-      "updatedAt": "2026-10-20T05:30:44.876Z"
     },
     "writing-style": {
       "source": "pydantic/monty",
