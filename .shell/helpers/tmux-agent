@@ -7,7 +7,7 @@ name=$(printf '%s\n' pi opencode codex cursor claude | fzf) || exit 0
 [[ -z "$name" ]] && exit 0
 
 case "$name" in
-opencode) cmd="opencode --port" ;;
+opencode) cmd="opencode" ;;
 pi) cmd="pi" ;;
 codex) cmd="codex" ;;
 cursor) cmd="cursor" ;;
