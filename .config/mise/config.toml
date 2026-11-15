@@ -11,14 +11,14 @@ eza = "latest"
 fd = "latest"
 fzf = "latest"
 gh = "latest"
-go = "latest"
+go = "1.27"
 gum = "latest"
 herdr = "latest"
 hunk = "latest"
 jqp = "latest"
 node = "26"
 pi = "latest"
-pnpm = "latest"
+pnpm = "12"
 ripgrep = "latest"
 shellcheck = "latest"
 shfmt = "latest"
@@ -26,6 +26,7 @@ tmux = "latest"
 uv = "latest"
 zoxide = "latest"
 opencode = "2"
+zig = "0.17"
 
 [bootstrap.packages]
 "brew:cocoapods" = "latest"
@@ -68,3 +69,6 @@ for link in ~/.claude/skills/*; do
   fi
 done
 '''
+
+[settings]
+minimum_release_age = "7d"
