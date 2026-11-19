@@ -149,7 +149,17 @@ return {
         opts = {
             sections = {
                 lualine_c = { "filename" },
-                lualine_x = { "location" },
+                lualine_x = {
+                    {
+                        function()
+                            return require("noice").api.status.mode.get()
+                        end,
+                        cond = function()
+                            return package.loaded["noice"] and require("noice").api.status.mode.has()
+                        end,
+                    },
+                    "location",
+                },
                 lualine_y = {},
                 lualine_z = {},
             },
