@@ -1,27 +1,22 @@
 # Common configuration to be used across all machines using this setup
 
-
 # Constants etc.
-
-FC_SEARCH_DIRS=("$HOME/coding" "$HOME/mermec" "$HOME/.config" "$HOME/.claude")
 export TMS_CONFIG_FILE="$HOME/.config/tms/config.toml"
 
-# Confiuration starts here
-
+# Configuration starts here
+export PATH=$HOME/.local/bin:$PATH
 export VISUAL=nvim
 export EDITOR="$VISUAL"
-export PATH=$HOME/.local/bin:$PATH
 
 export HOMEBREW_NO_ENV_HINTS=1
 
+# Empty value skips fzf's Ctrl-R binding; atuin owns it
+FZF_CTRL_R_COMMAND= source <(fzf --zsh)
+
 # Shell completions
 eval "$(mise activate zsh)"
-
-export PATH="$PATH:$HOME/.fzf/bin"
-source <(fzf --zsh)
-
 eval "$(uv generate-shell-completion zsh)"
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 eval "$(atuin init zsh)"
 
 # Shell customizations (aliases, functions, envs)
@@ -29,32 +24,3 @@ for file in "$HOME/.shell"/*.zsh; do
   [[ -f "$file" && "$file" != "$HOME/.shell/config.zsh" ]] && source "$file"
 done
 
-# Folder changer
-
-fc_find_dirs() {
-  for path in "${FC_SEARCH_DIRS[@]}"; do
-    if [[ -d "$path" ]]; then
-      "$FC_FD_CMD" --type d . "$path"
-      echo "$path"
-    fi
-  done
-}
-
-_folder_changer() {
-  local dir=$(fc_find_dirs | fzf)
-  if [ -n "$dir" ]; then
-    zle push-input
-    cd "$dir" || return
-    zle accept-line
-  fi
-}
-
-zle -N _folder_changer
-
-# This will actually not interfere with tmux,
-# so I will keep it there for convenience
-bindkey "^f" _folder_changer
-bindkey "^g" _folder_changer
-
-# Resolve fd path for folder changer
-FC_FD_CMD="$(command -v fd 2>/dev/null || echo fd)"

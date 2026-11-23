@@ -9,20 +9,6 @@ fi
 # fzf with bat preview
 alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 
-# zoxide-enhanced cd
-if command -v zoxide &> /dev/null; then
-  alias cd="zd"
-  zd() {
-    if [ $# -eq 0 ]; then
-      builtin cd ~ && return
-    elif [ -d "$1" ]; then
-      builtin cd "$1"
-    else
-      z "$@" && printf "\U000F17A9 " && pwd || echo "Error: Directory not found"
-    fi
-  }
-fi
-
 # xdg-open wrapper (Linux)
 if command -v xdg-open &> /dev/null; then
   open() {
@@ -36,7 +22,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Tool shortcuts
-alias c='chezmoi'
 alias d='docker'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
