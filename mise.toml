@@ -2,7 +2,6 @@
 "~/.agents" = { source = ".agents", mode = "symlink" }
 "~/.claude" = { source = ".claude", mode = "symlink-each" }
 "~/.config" = { source = ".config", mode = "symlink-each" }
-"~/.hammerspoon" = { source = ".hammerspoon", mode = "symlink-each" }
 "~/.oh-my-zsh" = { source = ".oh-my-zsh", mode = "symlink-each" }
 "~/.pi/agent" = { source = ".pi/agent", mode = "symlink-each", exclude = ["extensions/node_modules"] }
 "~/.shell" = { source = ".shell", mode = "symlink-each" }

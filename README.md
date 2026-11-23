@@ -95,26 +95,6 @@ Pi extensions live in `.pi/agent/extensions/`. Most are self-contained
 TypeScript files; larger ones have their own sub-folder. If an extension has a
 `README.md`, read it before changing the extension.
 
-## Hammerspoon - Whisper Dictation
-
-`.hammerspoon/Spoons/Whisper.spoon/` is a push-to-talk dictation Spoon. Hold
-**Caps Lock** to record from the microphone. On release, the audio goes to a
-remote [mlx-audio](https://github.com/Blaizzy/mlx-audio) speech-to-text server,
-and the transcription is pasted into the app that has focus.
-
-Requirements:
-
-- [Hammerspoon](https://www.hammerspoon.org/) (`brew install --cask hammerspoon`)
-- `ffmpeg` on the local machine (`brew install ffmpeg`)
-- An mlx-audio server on the LAN, for example
-  `mlx_audio.server --host 0.0.0.0 --port 8000`
-- Caps Lock remapped to Control in System Settings -> Keyboard -> Keyboard
-  Shortcuts -> Modifier Keys
-- Accessibility and Microphone permissions for Hammerspoon
-
-The server URL, model path, and other settings are at the top of
-`.hammerspoon/Spoons/Whisper.spoon/init.lua`.
-
 ## VPS overrides
 
 On remote machines, create `~/.config/tmux/tmux.local.conf` to enable OSC 52
